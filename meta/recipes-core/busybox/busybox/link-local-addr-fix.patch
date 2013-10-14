@@ -1,0 +1,23 @@
+diff -urN a/networking/zcip.c b/networking/zcip.c
+--- a/networking/zcip.c	2012-02-04 13:34:24.000000000 -0600
++++ b/networking/zcip.c	2012-12-12 15:16:00.195306552 -0600
+@@ -504,9 +504,18 @@
+ 			) {
+ 				source_ip_conflict = 1;
+ 			}
++
++			/*
++			 * According to RFC 3927, section 2.2.1:
++			 * Check if packet is an ARP probe by checking for a null source IP
++			 * then check that target IP is equal to ours and source hw addr
++			 * is not equal to ours. This condition should cause a conflict only
++			 * during probe.
++			 */
+ 			if (p.arp.arp_op == htons(ARPOP_REQUEST)
++			 && memcmp(p.arp.arp_spa, &null_ip, sizeof(struct in_addr)) == 0
+ 			 && memcmp(p.arp.arp_tpa, &ip.s_addr, sizeof(struct in_addr)) == 0
+-			 && memcmp(&p.arp.arp_tha, &eth_addr, ETH_ALEN) != 0
++			 && memcmp(&p.arp.arp_sha, &eth_addr, ETH_ALEN) != 0
+ 			) {
+ 				target_ip_conflict = 1;
+ 			}
