@@ -37,6 +37,7 @@ SRC_URI = "http://www.busybox.net/downloads/busybox-${PV}.tar.bz2;name=tarball \
            file://inetd \
            file://link-local-addr-fix.patch \
            file://umount-Add-support-for-users-options.patch \
+           file://ifplugd-netlink-packet-too-small-fix.patch \
 "
 
 SRC_URI[tarball.md5sum] = "e025414bc6cd79579cc7a32a45d3ae1c"
