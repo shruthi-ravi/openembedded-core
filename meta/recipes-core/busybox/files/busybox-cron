@@ -25,13 +25,8 @@ case "$1" in
 	$0 start
 	echo "done."
 	;;
-    reload)
-    	echo -n "reloading $DESC: $NAME... "
-    	killall -HUP $(basename ${DAEMON})
-	echo "done."
-	;;
     *)
-	echo "Usage: $0 {start|stop|restart|reload}"
+	echo "Usage: $0 {start|stop|restart}"
 	exit 1
 	;;
 esac
