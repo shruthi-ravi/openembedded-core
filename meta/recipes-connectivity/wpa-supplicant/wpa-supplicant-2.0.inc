@@ -6,7 +6,7 @@ LICENSE = "BSD"
 LIC_FILES_CHKSUM = "file://COPYING;md5=ab87f20cd7e8c0d0a6539b34d3791d0e \
                     file://README;md5=5cb758942d25f6f61fd4ac388fd446fa \
                     file://wpa_supplicant/wpa_supplicant.c;beginline=1;endline=12;md5=cba4fa09fa364da845ca546f21008909"
-DEPENDS = "gnutls dbus libnl"
+DEPENDS = "openssl dbus libnl"
 RRECOMMENDS_${PN} = "wpa-supplicant-passphrase wpa-supplicant-cli"
 
 inherit systemd
@@ -15,7 +15,7 @@ SYSTEMD_SERVICE_${PN} = "wpa_supplicant.service wpa_supplicant-nl80211@.service 
 SYSTEMD_AUTO_ENABLE = "disable"
 
 SRC_URI = "http://hostap.epitest.fi/releases/wpa_supplicant-${PV}.tar.gz \
-           file://defconfig-gnutls \
+           file://defconfig-openssl \
            file://wpa-supplicant.sh \
            file://wpa_supplicant.conf \
            file://wpa_supplicant.conf-sane \
@@ -31,7 +31,7 @@ FILES_${PN} += "${datadir}/dbus-1/system-services/*"
 CONFFILES_${PN} += "${sysconfdir}/wpa_supplicant.conf"
 
 do_configure () {
-	install -m 0755 ${WORKDIR}/defconfig-gnutls wpa_supplicant/.config
+	install -m 0755 ${WORKDIR}/defconfig-openssl wpa_supplicant/.config
 	echo "CFLAGS +=\"-I${STAGING_INCDIR}/libnl3\"" >> wpa_supplicant/.config
 }
 
