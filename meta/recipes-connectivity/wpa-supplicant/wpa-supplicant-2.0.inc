@@ -23,6 +23,7 @@ SRC_URI = "http://hostap.epitest.fi/releases/wpa_supplicant-${PV}.tar.gz \
            file://fix-libnl3-host-contamination.patch \
            file://save-frequency-with-save_config.patch \
            file://wep-hexkeys-and-wpa-psk-hexkeys-fix.patch \
+           file://report-eap-authentication-state.patch \
 "
 
 S = "${WORKDIR}/wpa_supplicant-${PV}"
