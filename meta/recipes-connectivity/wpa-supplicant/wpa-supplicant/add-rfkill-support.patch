@@ -1,0 +1,43 @@
+diff -urN a/src/drivers/driver_nl80211.c b/src/drivers/driver_nl80211.c
+--- a/src/drivers/driver_nl80211.c	2013-01-12 09:42:53.000000000 -0600
++++ b/src/drivers/driver_nl80211.c	2013-08-20 14:33:33.467562560 -0500
+@@ -2920,7 +2920,9 @@
+ 
+ static void wpa_driver_nl80211_rfkill_blocked(void *ctx)
+ {
++	struct wpa_driver_nl80211_data *drv = ctx;
+ 	wpa_printf(MSG_DEBUG, "nl80211: RFKILL blocked");
++	wpa_supplicant_event(drv->ctx, EVENT_INTERFACE_DISABLED, NULL);
+ 	/*
+ 	 * This may be for any interface; use ifdown event to disable
+ 	 * interface.
+@@ -2938,6 +2940,8 @@
+ 			   "after rfkill unblock");
+ 		return;
+ 	}
++	wpa_supplicant_event(drv->ctx, EVENT_INTERFACE_ENABLED, NULL);
++
+ 	/* rtnetlink ifup handler will report interface as enabled */
+ }
+ 
+diff -urN a/src/drivers/driver_wext.c b/src/drivers/driver_wext.c
+--- a/src/drivers/driver_wext.c	2013-01-12 09:42:53.000000000 -0600
++++ b/src/drivers/driver_wext.c	2013-08-20 14:33:33.467562560 -0500
+@@ -745,7 +745,9 @@
+ 
+ static void wpa_driver_wext_rfkill_blocked(void *ctx)
+ {
++	struct wpa_driver_wext_data *drv = ctx;
+ 	wpa_printf(MSG_DEBUG, "WEXT: RFKILL blocked");
++	wpa_supplicant_event(drv->ctx, EVENT_INTERFACE_DISABLED, NULL);
+ 	/*
+ 	 * This may be for any interface; use ifdown event to disable
+ 	 * interface.
+@@ -762,6 +764,7 @@
+ 			   "after rfkill unblock");
+ 		return;
+ 	}
++	wpa_supplicant_event(drv->ctx, EVENT_INTERFACE_ENABLED, NULL);
+ 	/* rtnetlink ifup handler will report interface as enabled */
+ }
+ 

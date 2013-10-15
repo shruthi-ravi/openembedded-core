@@ -24,6 +24,7 @@ SRC_URI = "http://hostap.epitest.fi/releases/wpa_supplicant-${PV}.tar.gz \
            file://save-frequency-with-save_config.patch \
            file://wep-hexkeys-and-wpa-psk-hexkeys-fix.patch \
            file://report-eap-authentication-state.patch \
+           file://add-rfkill-support.patch \
 "
 
 S = "${WORKDIR}/wpa_supplicant-${PV}"
