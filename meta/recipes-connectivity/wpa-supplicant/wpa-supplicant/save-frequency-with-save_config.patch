@@ -1,0 +1,11 @@
+diff -urN a/wpa_supplicant/config_file.c b/wpa_supplicant/config_file.c
+--- a/wpa_supplicant/config_file.c	2013-01-12 09:42:53.000000000 -0600
++++ b/wpa_supplicant/config_file.c	2013-08-20 14:09:03.739565160 -0500
+@@ -620,6 +620,7 @@
+ 
+ 	STR(ssid);
+ 	INT(scan_ssid);
++	INT(frequency);
+ 	write_bssid(f, ssid);
+ 	write_psk(f, ssid);
+ 	write_proto(f, ssid);
