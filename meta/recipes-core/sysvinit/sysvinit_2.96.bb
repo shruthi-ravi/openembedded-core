@@ -10,6 +10,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=751419260aa954499f7abaabaa882bbe \
 RDEPENDS_${PN} = "${PN}-inittab"
 
 SRC_URI = "${SAVANNAH_GNU_MIRROR}/sysvinit/sysvinit-${PV}.tar.xz \
+           file://bootlogd-xemacps.patch \
            file://install.patch \
            file://crypt-lib.patch \
            file://pidof-add-m-option.patch \
