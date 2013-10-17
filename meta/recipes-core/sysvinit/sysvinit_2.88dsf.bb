@@ -19,6 +19,7 @@ SRC_URI = "http://download.savannah.gnu.org/releases-noredirect/sysvinit/sysvini
            file://rcS \
 	   file://bootlogd.init \
            file://bootlogd-xemacps.patch \
+           file://01_bootlogd \
 "
 
 SRC_URI[md5sum] = "6eda8a97b86e0a6f59dabbf25202aa6f"
@@ -91,4 +92,7 @@ do_install () {
 
         update-rc.d -r ${D} bootlogd start 07 S .
         update-rc.d -r ${D} stop-bootlogd start 99 2 3 4 5 .
+
+	install -d ${D}${sysconfdir}/default/volatiles
+	install -m 0644 ${WORKDIR}/01_bootlogd ${D}${sysconfdir}/default/volatiles
 }
