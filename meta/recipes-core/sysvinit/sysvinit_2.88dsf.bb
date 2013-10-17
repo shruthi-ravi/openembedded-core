@@ -20,6 +20,7 @@ SRC_URI = "${SAVANNAH_GNU_MIRROR}/sysvinit/sysvinit-${PV}.tar.bz2 \
            file://rcS \
            file://bootlogd.init \
            file://01_bootlogd \
+           file://bootlogd-xemacps.patch \
 "
 
 SRC_URI[md5sum] = "6eda8a97b86e0a6f59dabbf25202aa6f"
