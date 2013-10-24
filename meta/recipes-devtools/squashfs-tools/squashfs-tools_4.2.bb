@@ -43,4 +43,4 @@ FILESPATHPKG =. "squashfs-tools-${PV}:"
 
 ARM_INSTRUCTION_SET = "arm"
 
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"
