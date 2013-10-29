@@ -10,6 +10,7 @@ RDEPENDS_${PN} = "\
     libgcov-dev \
     libstdc++ \
     libstdc++-dev \
+    libstdc++-staticdev \
     ${LIBC_DEPENDENCIES} \
     qemuwrapper-cross \
     "
