@@ -17,5 +17,6 @@ RDEPENDS_${PN} = "\
     libgcc-dev \
     libstdc++ \
     libstdc++-dev \
+    libstdc++-staticdev \
     ${LIBC_DEPENDENCIES} \
     "
