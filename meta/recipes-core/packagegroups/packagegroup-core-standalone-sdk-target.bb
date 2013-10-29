@@ -11,5 +11,6 @@ RDEPENDS_${PN} = "\
     libatomic-dev \
     libstdc++ \
     libstdc++-dev \
+    libstdc++-staticdev \
     ${LIBC_DEPENDENCIES} \
     "
