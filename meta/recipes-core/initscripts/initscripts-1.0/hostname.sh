@@ -10,5 +10,5 @@
 
 if test -f /etc/hostname
 then
-	hostname -F /etc/hostname
+	hostname `cat /etc/hostname`
 fi
