@@ -1,7 +1,7 @@
 #! /bin/sh
 set -e
 
-PIDFILE=/var/run/openssh.pid
+PIDFILE=/var/run/sshd.pid
 
 # /etc/init.d/ssh: start and stop the OpenBSD "secure shell" daemon
 
