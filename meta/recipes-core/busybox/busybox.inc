@@ -38,6 +38,7 @@ SYSTEMD_SERVICE_${PN}-syslog = "busybox-syslog.service"
 
 CONFFILES_${PN}-syslog = "${sysconfdir}/syslog-startup.conf.${BPN}"
 CONFFILES_${PN}-mdev = "${sysconfdir}/mdev.conf"
+RPROVIDES_${PN}-mdev = "hotplug"
 
 RRECOMMENDS_${PN} = "${PN}-syslog ${PN}-udhcpc"
 
