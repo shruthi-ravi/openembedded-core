@@ -179,9 +179,10 @@ ALTERNATIVE_LINK_NAME[utmpdump.1] = "${mandir}/man1/utmpdump.1"
 ALTERNATIVE_LINK_NAME[wall.1] = "${mandir}/man1/wall.1"
 
 ALTERNATIVE_util-linux-hwclock = "hwclock"
-# There seems to be problem, atleast on nslu2, with these, untill they are
-# fixed the busybox ones have higher priority
-ALTERNATIVE_PRIORITY[hwclock] = "10"
+# There seems to be problems with hwclock on nslu2, there is a pending patch on
+# the nslu2 layer to set ALTERNATIVE_PRIORITY of hwclock to 10 so it will use
+# busybox.
+ALTERNATIVE_PRIORITY[hwclock] ?= "100"
 ALTERNATIVE_LINK_NAME[hwclock] = "${base_sbindir}/hwclock"
 
 ALTERNATIVE_util-linux-fdisk = "fdisk"
