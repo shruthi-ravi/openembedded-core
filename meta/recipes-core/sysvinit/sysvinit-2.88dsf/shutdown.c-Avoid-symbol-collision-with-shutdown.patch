@@ -1,0 +1,53 @@
+From 229d4999ee45b9a81ea43ea3227185d7a6e28080 Mon Sep 17 00:00:00 2001
+From: Richard Tollerton <rich.tollerton@ni.com>
+Date: Wed, 13 Nov 2013 20:51:04 -0600
+Subject: [PATCH 1/2] shutdown.c: Avoid symbol collision with shutdown()
+To: sysvinit-devel@nongnu.org
+Cc: ben.shelton@ni.com,
+    scot.salmon@ni.com,
+    jacob.champion@ni.com
+
+shutdown() is being exported as a dynamic symbol because it collides
+with shutdown(2), and cc presumes that we're overriding that syscall.
+This can really screw up (and has really screwed up) NSS modules. To
+fix, rename the function.
+
+Signed-off-by: Richard Tollerton <rich.tollerton@ni.com>
+---
+ src/shutdown.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/shutdown.c b/src/shutdown.c
+index dc3eab0..9e72890 100644
+--- a/src/shutdown.c
++++ b/src/shutdown.c
+@@ -400,7 +400,7 @@ void fastdown()
+ /*
+  *	Go to runlevel 0, 1 or 6.
+  */
+-void shutdown(char *halttype)
++void issue_shutdown(char *halttype)
+ {
+ 	char	*args[8];
+ 	int	argp = 0;
+@@ -749,7 +749,7 @@ int main(int argc, char **argv)
+ 		if (wt < 0) wt += 1440;
+ 	}
+ 	/* Shutdown NOW if time == 0 */
+-	if (wt == 0) shutdown(halttype);
++	if (wt == 0) issue_shutdown(halttype);
+ 
+ 	/* Give warnings on regular intervals and finally shutdown. */
+ 	if (wt < 15 && !needwarning(wt)) warn(wt);
+@@ -762,7 +762,7 @@ int main(int argc, char **argv)
+ 		hardsleep(60);
+ 		wt--;
+ 	}
+-	shutdown(halttype);
++	issue_shutdown(halttype);
+ 
+ 	return 0; /* Never happens */
+ }
+-- 
+1.8.4.2
+

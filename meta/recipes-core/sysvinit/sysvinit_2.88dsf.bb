@@ -20,6 +20,8 @@ SRC_URI = "http://download.savannah.gnu.org/releases-noredirect/sysvinit/sysvini
 	   file://bootlogd.init \
            file://bootlogd-xemacps.patch \
            file://01_bootlogd \
+           file://shutdown.c-Avoid-symbol-collision-with-shutdown.patch \
+           file://shutdown.c-Avoid-symbol-collision-with-warn.patch \
 "
 
 SRC_URI[md5sum] = "6eda8a97b86e0a6f59dabbf25202aa6f"
