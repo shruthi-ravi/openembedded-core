@@ -1,0 +1,60 @@
+From 32fd9f2764bc8111df52d27bd5f9c0b5be4b05c2 Mon Sep 17 00:00:00 2001
+From: Richard Tollerton <rich.tollerton@ni.com>
+Date: Wed, 13 Nov 2013 20:57:53 -0600
+Subject: [PATCH 2/2] shutdown.c: Avoid symbol collision with warn()
+To: sysvinit-devel@nongnu.org
+Cc: ben.shelton@ni.com,
+    scot.salmon@ni.com,
+    jacob.champion@ni.com
+
+warn() is being exported as a dynamic symbol because it collides with
+warn(3), and cc presumes that we're overriding it. This could affect
+unexpectedly loaded shared libraries (e.g. NSS modules). To fix,
+rename the function.
+
+Signed-off-by: Richard Tollerton <rich.tollerton@ni.com>
+---
+ src/shutdown.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/shutdown.c b/src/shutdown.c
+index 9e72890..6318f58 100644
+--- a/src/shutdown.c
++++ b/src/shutdown.c
+@@ -213,7 +213,7 @@ int init_setenv(char *name, char *value)
+ /*
+  *	Tell everyone the system is going down in 'mins' minutes.
+  */
+-void warn(int mins)
++void issue_warn(int mins)
+ {
+ 	char buf[MESSAGELEN + sizeof(newstate)];
+ 	int len;
+@@ -407,7 +407,7 @@ void issue_shutdown(char *halttype)
+ 	int	do_halt = (down_level[0] == '0');
+ 
+ 	/* Warn for the last time */
+-	warn(0);
++	issue_warn(0);
+ 	if (dontshut) {
+ 		hardsleep(1);
+ 		stopit(0);
+@@ -752,13 +752,13 @@ int main(int argc, char **argv)
+ 	if (wt == 0) issue_shutdown(halttype);
+ 
+ 	/* Give warnings on regular intervals and finally shutdown. */
+-	if (wt < 15 && !needwarning(wt)) warn(wt);
++	if (wt < 15 && !needwarning(wt)) issue_warn(wt);
+ 	while(wt) {
+ 		if (wt <= 5 && !didnolog) {
+ 			donologin(wt);
+ 			didnolog++;
+ 		}
+-		if (needwarning(wt)) warn(wt);
++		if (needwarning(wt)) issue_warn(wt);
+ 		hardsleep(60);
+ 		wt--;
+ 	}
+-- 
+1.8.4.2
+
