@@ -44,6 +44,21 @@ PACKAGE_EXTRA_ARCHS_tune-armv7athf-neon = "${PACKAGE_EXTRA_ARCHS_tune-armv7athf}
 PACKAGE_EXTRA_ARCHS_tune-armv7ahf-neon-vfpv4 = "${PACKAGE_EXTRA_ARCHS_tune-armv7ahf-neon} armv7ahf-vfp-neon-vfpv4"
 PACKAGE_EXTRA_ARCHS_tune-armv7athf-neon-vfpv4 = "${PACKAGE_EXTRA_ARCHS_tune-armv7athf-neon} armv7athf-vfp-neon-vfpv4"
 
+# VFPv3 Tunes
+AVAILTUNES += "armv7a-vfpv3 armv7at-vfpv3 armv7ahf-vfpv3 armv7athf-vfpv3"
+ARMPKGARCH_tune-armv7a-vfpv3?= "armv7a"
+ARMPKGARCH_tune-armv7at-vfpv3 ?= "armv7a"
+ARMPKGARCH_tune-armv7ahf-vfpv3?= "armv7a"
+ARMPKGARCH_tune-armv7athf-vfpv3 ?= "armv7a"
+TUNE_FEATURES_tune-armv7a-vfpv3 ?= "${TUNE_FEATURES_tune-armv7a} vfpv3"
+TUNE_FEATURES_tune-armv7at-vfpv3 ?= "${TUNE_FEATURES_tune-armv7at} vfpv3"
+TUNE_FEATURES_tune-armv7ahf-vfpv3 ?= "${TUNE_FEATURES_tune-armv7a-vfpv3} callconvention-hard"
+TUNE_FEATURES_tune-armv7athf-vfpv3 ?= "${TUNE_FEATURES_tune-armv7at-vfpv3} callconvention-hard"
+PACKAGE_EXTRA_ARCHS_tune-armv7a-vfpv3 = "${PACKAGE_EXTRA_ARCHS_tune-armv7a} armv7a-vfpv3"
+PACKAGE_EXTRA_ARCHS_tune-armv7at-vfpv3 = "${PACKAGE_EXTRA_ARCHS_tune-armv7at} armv7a-vfpv3 armv7at2-vfpv3"
+PACKAGE_EXTRA_ARCHS_tune-armv7ahf-vfpv3 = "${PACKAGE_EXTRA_ARCHS_tune-armv7ahf} armv7ahf-vfpv3"
+PACKAGE_EXTRA_ARCHS_tune-armv7athf-vfpv3 = "${PACKAGE_EXTRA_ARCHS_tune-armv7athf} armv7ahf-vfpv3 armv7at2hf-vfpv3"
+
 # Big Endian
 AVAILTUNES += "armv7ab armv7atb armv7ab-neon armv7atb-neon"
 ARMPKGARCH_tune-armv7ab ?= "armv7a"
