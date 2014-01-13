@@ -14,7 +14,8 @@ LDFLAGS += "-lrt"
 
 DEPENDS = "acl glib-2.0 libusb usbutils pciutils gperf-native libxslt-native util-linux"
 RPROVIDES_${PN} = "hotplug"
-RRECOMMENDS_${PN} += "udev-extraconf usbutils-ids pciutils-ids"
+RRECOMMENDS_${PN} += "udev-extraconf usbutils-ids"
+RRECOMMENDS_${PN} += "${@base_contains('COMBINED_FEATURES', 'pci', 'pciutils-ids', '',d)}"
 
 #
 # packages which content depend on MACHINE_FEATURES/COMBINED_FEATURES need to be MACHINE_ARCH
