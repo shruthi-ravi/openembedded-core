@@ -69,9 +69,10 @@ case "$1" in
                     if [ "$READDATA" = "$VERSION$CMDLINE$DEVICES$ATAGS" ]; then
                             tar xzf $DEVCACHE -C / --exclude=log
                             not_first_boot=1
+		    else
+			    echo "$VERSION$CMDLINE$DEVICES$ATAGS" > /dev/shm/udev.cache
                     fi
 
-                    echo "$VERSION$CMDLINE$DEVICES$ATAGS" > /dev/shm/udev.cache
             fi
     fi
 
