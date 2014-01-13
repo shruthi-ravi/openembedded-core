@@ -67,7 +67,7 @@ case "$1" in
             if [ -e $DEVCACHE ]; then
                     readfile /etc/udev/cache.data
                     if [ "$READDATA" = "$VERSION$CMDLINE$DEVICES$ATAGS" ]; then
-                            (cd /; tar xzf $DEVCACHE > /dev/null 2>&1)
+                            (cd /; tar xzf $DEVCACHE --exclude=log)
                             not_first_boot=1
                     fi
 
