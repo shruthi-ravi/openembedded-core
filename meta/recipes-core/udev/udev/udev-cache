@@ -19,7 +19,7 @@ export TZ=/etc/localtime
 
 if [ "$DEVCACHE" != "" ]; then
 	[ "${VERBOSE}" != "no" ] && echo "Populating dev cache"
-	(cd /; tar czf "$DEVCACHE" dev)
+	tar czf "$DEVCACHE" dev -C / --exclude=log
 	mv /dev/shm/udev.cache /etc/udev/cache.data
 else
 	rm -f /dev/shm/udev.cache
