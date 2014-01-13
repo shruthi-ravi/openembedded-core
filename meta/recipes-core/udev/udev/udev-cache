@@ -25,7 +25,7 @@ fi
 
 if [ "$DEVCACHE" != "" -a -e /dev/shm/udev.cache ]; then
 	echo "Populating dev cache"
-	(cd /; tar cf "$DEVCACHE" dev)
+	(cd /; tar czf "$DEVCACHE" dev)
 	mv /dev/shm/udev.cache /etc/udev/cache.data
 fi
 
