@@ -40,8 +40,9 @@
 ###############################################################################
 
 
-# Driver interface for Host AP driver
+# Driver interface for Host AP driver and AP support in supplicant
 CONFIG_DRIVER_HOSTAP=y
+CONFIG_AP=y
 
 # Driver interface for Agere driver
 #CONFIG_DRIVER_HERMES=y
