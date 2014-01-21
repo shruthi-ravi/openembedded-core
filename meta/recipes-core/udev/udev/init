@@ -67,7 +67,7 @@ case "$1" in
             if [ -e $DEVCACHE ]; then
                     readfile "$DEVCACHE_SYSCONF"
                     if [ "$READDATA" = "$VERSION$CMDLINE$DEVICES$ATAGS" ]; then
-                            tar xzf $DEVCACHE -C / --exclude=log
+                            tar xzf $DEVCACHE -C / $DEVCACHE_EXTRACT_OPTS
                             not_first_boot=1
 		    else
 			    echo "$VERSION$CMDLINE$DEVICES$ATAGS" > "$DEVCACHE_CURRENT_SYSCONF"

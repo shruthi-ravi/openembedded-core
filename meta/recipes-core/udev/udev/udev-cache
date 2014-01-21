@@ -20,7 +20,7 @@ export TZ=/etc/localtime
 if [ "$DEVCACHE" != "" -a -e "$DEVCACHE_CURRENT_SYSCONF" ]; then
 	[ "${VERBOSE}" != "no" ] && echo "Populating dev cache"
 	(
-		tar czf "${DEVCACHE}.tmp" dev -C / --exclude=log
+		tar czf "${DEVCACHE}.tmp" dev -C / $DEVCACHE_CREATE_OPTS
 		mv -f "${DEVCACHE}.tmp" "$DEVCACHE"
 		mv "$DEVCACHE_CURRENT_SYSCONF" "$DEVCACHE_SYSCONF"
 	) &
