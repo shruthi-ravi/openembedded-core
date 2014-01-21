@@ -7,5 +7,6 @@ DEVCACHE_SYSCONF="/etc/udev/cache.data"
 DEVCACHE_CURRENT_SYSCONF="/dev/shm/udev.cache"
 
 # - Avoid /dev/log because it's a pipe.
-DEVCACHE_EXTRACT_OPTS="--exclude=log"
+# - Don't restore mtimes. Avoids errors on systems lacking an RTC.
+DEVCACHE_EXTRACT_OPTS="--exclude=log -m"
 DEVCACHE_CREATE_OPTS="--exclude=log"
