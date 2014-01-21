@@ -15,7 +15,7 @@ export TZ=/etc/localtime
 [ -x @UDEVD@ ] || exit 1
 [ -d /sys/class ] || exit 1
 
-[ -f /etc/default/udev-cache ] && . /etc/default/udev-cache
+[ ! -f /etc/default/udev-cache ] || . /etc/default/udev-cache
 
 if [ "$DEVCACHE" != "" -a -e "$DEVCACHE_CURRENT_SYSCONF" ]; then
 	[ "${VERBOSE}" != "no" ] && echo "Populating dev cache"
