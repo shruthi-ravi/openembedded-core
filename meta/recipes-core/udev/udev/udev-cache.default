@@ -1,4 +1,4 @@
-# Default for /etc/init.d/udev
+# Default for /etc/init.d/udev, /etc/init.d/udev-cache
 
 # Comment this out to disable device cache
 DEVCACHE="/etc/udev-cache.tar.gz"
