@@ -69,7 +69,7 @@ case "$1" in
 		    readfiles "$DEVCACHE_SYSCONF"
 		    OLDDATA="$READDATA"
 		    if [ "$OLDDATA" = "$NEWDATA" ]; then
-                            tar xzf $DEVCACHE -C / --exclude=log
+                            tar xzf $DEVCACHE -C / $DEVCACHE_EXTRACT_OPTS
                             not_first_boot=1
                             [ "$VERBOSE" != "no" ] && echo "udev: using cache file $DEVCACHE"
                             [ -e "$DEVCACHE_CURRENT_SYSCONF" ] && rm -f "$DEVCACHE_CURRENT_SYSCONF"
