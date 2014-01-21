@@ -23,13 +23,15 @@ if [ "$ROOTFS_READ_ONLY" = "yes" ]; then
     exit 0
 fi
 
-if [ "$DEVCACHE" != "" -a -e "$DEVCACHE_CURRENT_SYSCONF" ]; then
-	[ "${VERBOSE}" != "no" ] && echo "Populating dev cache"
-	(
-		tar czf "${DEVCACHE}.tmp" dev -C / $DEVCACHE_CREATE_OPTS
-		mv -f "${DEVCACHE}.tmp" "$DEVCACHE"
+[ "$DEVCACHE" != "" ] || exit 0
+[ "${VERBOSE}" == "no" ] || echo -n "$0: checking for ${DEVCACHE_CURRENT_SYSCONF}... "
+[ -e "$DEVCACHE_CURRENT_SYSCONF" ] || { echo "not found"; exit 0; }
+[ "${VERBOSE}" == "no" ] || echo "found; building cache."
+
+(
+	tar czf "${DEVCACHE}.tmp" dev -C / $DEVCACHE_CREATE_OPTS && \
+		mv -f "${DEVCACHE}.tmp" "$DEVCACHE" && \
 		mv "$DEVCACHE_CURRENT_SYSCONF" "$DEVCACHE_SYSCONF"
-	) &
-fi
+) &
 
 exit 0
