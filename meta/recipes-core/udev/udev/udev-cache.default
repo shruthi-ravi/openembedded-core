@@ -2,3 +2,7 @@
 
 # Comment this out to disable device cache
 DEVCACHE="/etc/udev-cache.tar.gz"
+
+DEVCACHE_SYSCONF="/etc/udev/cache.data"
+DEVCACHE_CURRENT_SYSCONF="/dev/shm/udev.cache"
+
