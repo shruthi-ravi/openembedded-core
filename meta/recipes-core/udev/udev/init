@@ -66,13 +66,13 @@ case "$1" in
             if [ -e $DEVCACHE ]; then
 		    readfiles $CMP_FILE_LIST
 		    NEWDATA="$READDATA"
-		    readfiles /etc/udev/cache.data
+		    readfiles "$DEVCACHE_SYSCONF"
 		    OLDDATA="$READDATA"
 		    if [ "$OLDDATA" = "$NEWDATA" ]; then
                             tar xzf $DEVCACHE -C / --exclude=log
                             not_first_boot=1
                             [ "$VERBOSE" != "no" ] && echo "udev: using cache file $DEVCACHE"
-                            [ -e /dev/shm/udev.cache ] && rm -f /dev/shm/udev.cache
+                            [ -e "$DEVCACHE_CURRENT_SYSCONF" ] && rm -f "$DEVCACHE_CURRENT_SYSCONF"
                     else
 			    # Output detailed reason why the cached /dev is not used
 			    if [ "$VERBOSE" != "no" ]; then
@@ -81,14 +81,14 @@ case "$1" in
 				    echo "udev: olddata: $OLDDATA"
 				    echo "udev: newdata: $NEWDATA"
 			    fi
-			    echo "$NEWDATA" > /dev/shm/udev.cache
+			    echo "$NEWDATA" > "$DEVCACHE_CURRENT_SYSCONF"
                     fi
 	    else
 		    if [ "$ROOTFS_READ_ONLY" != "yes" ]; then
 			    # If rootfs is not read-only, it's possible that a new udev cache would be generated;
 			    # otherwise, we do not bother to read files.
 			    readfiles $CMP_FILE_LIST
-			    echo "$READDATA" > /dev/shm/udev.cache
+			    echo "$READDATA" > "$DEVCACHE_CURRENT_SYSCONF"
 		    fi
             fi
     fi
