@@ -63,11 +63,12 @@ case "$1" in
             DEVICES="$READDATA"
             readfile /proc/atags
             ATAGS="$READDATA"
+	    RULELIST=`ls -l /lib/udev/rules.d/* /etc/udev/rules.d/* 2>/dev/null`
 
-            echo "$VERSION$CMDLINE$DEVICES$ATAGS" > "$DEVCACHE_CURRENT_SYSCONF"
+            echo "$VERSION$CMDLINE$DEVICES$ATAGS$RULELIST" > "$DEVCACHE_CURRENT_SYSCONF"
 
 	    readfile "$DEVCACHE_SYSCONF"
-            if [ "$READDATA" = "$VERSION$CMDLINE$DEVICES$ATAGS" -a -f "$DEVCACHE" ]
+            if [ "$READDATA" = "$VERSION$CMDLINE$DEVICES$ATAGS$RULELIST" -a -f "$DEVCACHE" ]
 	    then
                     tar xzf $DEVCACHE -C / $DEVCACHE_EXTRACT_OPTS && \
 			    not_first_boot=1 && \
