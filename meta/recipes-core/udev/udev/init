@@ -68,7 +68,7 @@ case "$1" in
 		    NEWDATA="$READDATA"
 		    readfiles "$DEVCACHE_SYSCONF"
 		    OLDDATA="$READDATA"
-		    if [ "$OLDDATA" = "$NEWDATA" ]; then
+		    if [ "$OLDDATA" = "$NEWDATA" -a -f "$DEVCACHE" ]; then
                             tar xzf $DEVCACHE -C / $DEVCACHE_EXTRACT_OPTS
                             not_first_boot=1
                             [ "$VERBOSE" != "no" ] && echo "udev: using cache file $DEVCACHE"
