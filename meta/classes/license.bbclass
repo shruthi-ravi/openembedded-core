@@ -51,11 +51,10 @@ license_create_manifest() {
 		printf "LICENSE:" >> ${LICENSE_MANIFEST}
 		for lic in ${pkged_lic}; do
 			# to reference a license file trim trailing + symbol
-			if [ -e "${LICENSE_DIRECTORY}/${pkged_pn}/generic_${lic%+}" ]; then
-				printf " ${lic}" >> ${LICENSE_MANIFEST}
-			else
-				echo "WARNING: The license listed ${lic} was not in the licenses collected for ${pkged_pn}"
+			if ! [ -e "${LICENSE_DIRECTORY}/${pkged_pn}/generic_${lic%+}" ]; then
+				bbwarn "The license listed ${lic} was not in the licenses collected for ${pkged_pn}"
 			fi
+                        printf " ${lic}" >> ${LICENSE_MANIFEST}
 		done
 		printf "\n\n" >> ${LICENSE_MANIFEST}
 	done
@@ -74,9 +73,9 @@ license_create_manifest() {
 					# Really don't need to copy the generics as they're 
 					# represented in the manifest and in the actual pkg licenses
 					# Doing so would make your image quite a bit larger
-					if [[ "${lic}" != "generic_"* ]]; then
+					if [ "${lic#generic_}" = "${lic}" ]; then
 						cp ${LICENSE_DIRECTORY}/${pkg}/${lic} ${IMAGE_ROOTFS}/usr/share/common-licenses/${pkg}/${lic}
-					elif [[ "${lic}" == "generic_"* ]]; then
+					else
 						if [ ! -f ${IMAGE_ROOTFS}/usr/share/common-licenses/${lic} ]; then
 							cp ${LICENSE_DIRECTORY}/${pkg}/${lic} ${IMAGE_ROOTFS}/usr/share/common-licenses/
 						fi

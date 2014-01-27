@@ -451,7 +451,7 @@ python perform_packagecopy () {
     # Start by package population by taking a copy of the installed
     # files to operate on
     # Preserve sparse files and hard links
-    cmd = 'tar -cf - -C %s -ps . | tar -xf - -C %s' % (dest, dvar)
+    cmd = 'tar -cf - -C %s -p . | tar -xf - -C %s' % (dest, dvar)
     retval = subprocess.call(cmd, shell=True)
     if retval:
         bb.fatal("file copy failed with exit code %s (cmd was %s)" % (retval, cmd))
@@ -925,7 +925,7 @@ python populate_packages () {
     for pkg in packages.split():
         if d.getVar('LICENSE_EXCLUSION-' + pkg, True):
             bb.warn("%s has an incompatible license. Excluding from packaging." % pkg)
-        elif pkg in package_list:
+        if pkg in package_list:
             bb.error("%s is listed in PACKAGES multiple times, this leads to packaging errors." % pkg)
         else:
             package_list.append(pkg)
@@ -964,6 +964,9 @@ python populate_packages () {
             if file in seen:
                 continue
             seen.append(file)
+
+            if d.getVar('LICENSE_EXCLUSION-' + pkg, True):
+                continue
 
             def mkdir(src, dest, p):
                 src = os.path.join(src, p)
