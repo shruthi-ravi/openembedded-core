@@ -18,7 +18,7 @@ export TZ=/etc/localtime
 [ -f /etc/default/udev-cache ] && . /etc/default/udev-cache
 
 if [ "$DEVCACHE" != "" ]; then
-	echo "Populating dev cache"
+	[ "${VERBOSE}" != "no" ] && echo "Populating dev cache"
 	(cd /; tar czf "$DEVCACHE" dev)
 	mv /dev/shm/udev.cache /etc/udev/cache.data
 else
