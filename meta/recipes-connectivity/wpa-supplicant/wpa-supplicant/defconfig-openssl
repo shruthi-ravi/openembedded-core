@@ -310,7 +310,7 @@ CONFIG_PEERKEY=y
 # gnutls = GnuTLS (needed for TLS/IA, see also CONFIG_GNUTLS_EXTRA)
 # internal = Internal TLSv1 implementation (experimental)
 # none = Empty template
-#CONFIG_TLS=openssl
+CONFIG_TLS=openssl
 
 # Whether to enable TLS/IA support, which is required for EAP-TTLSv1.
 # You need CONFIG_TLS=gnutls for this to have any effect. Please note that
@@ -404,7 +404,9 @@ CONFIG_PEERKEY=y
 #LIBS += -lbfd -liberty -lz
 #LIBS_p += -lbfd -liberty -lz
 #LIBS_c += -lbfd -liberty -lz
-CONFIG_TLS = openssl
-#CONFIG_GNUTLS_EXTRA=y
+
 CONFIG_CTRL_IFACE_DBUS=y
 CONFIG_CTRL_IFACE_DBUS_NEW=y
+
+# Enable 802.11n for AP mode
+CONFIG_IEEE80211N=y
