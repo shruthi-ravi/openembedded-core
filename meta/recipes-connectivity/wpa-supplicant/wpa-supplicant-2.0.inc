@@ -21,7 +21,6 @@ SRC_URI = "http://hostap.epitest.fi/releases/wpa_supplicant-${PV}.tar.gz \
            file://wpa_supplicant.conf-sane \
            file://99_wpa_supplicant \
            file://fix-libnl3-host-contamination.patch \
-           file://save-frequency-with-save_config.patch \
            file://wep-hexkeys-and-wpa-psk-hexkeys-fix.patch \
            file://report-eap-authentication-state.patch \
            file://add-rfkill-support.patch \
