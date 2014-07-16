@@ -51,6 +51,7 @@ EXTRA_OECONF = "--disable-introspection \
                 --with-rootprefix= \
                 --without-systemdsystemunitdir \
                 ${@base_contains('MACHINE_FEATURES', 'keyboard', '', '--disable-keymap', d)} \
+                enable_mtd_probe=no \
                "
 
 PACKAGES =+ "udev-utils udev-cache"
