@@ -12,4 +12,8 @@ DEVCACHE_CURRENT_SYSCONF="/dev/shm/udev.cache"
 DEVCACHE_EXTRACT_OPTS="--exclude=log -m --exclude=udev.cache --one-file-system"
 DEVCACHE_CREATE_OPTS="--exclude=log --exclude=udev.cache --one-file-system"
 
+# Busybox tar does not support --one-file-system option
+BUSYBOX_DEVCACHE_EXTRACT_OPTS="--exclude=log --exclude=udev.cache"
+BUSYBOX_DEVCACHE_CREATE_OPTS="--exclude=log --exclude=udev.cache"
+
 PROBE_PLATFORM_BUS="yes"

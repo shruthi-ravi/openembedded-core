@@ -28,10 +28,18 @@ fi
 [ -e "$DEVCACHE_CURRENT_SYSCONF" ] || { echo "not found"; exit 0; }
 [ "${VERBOSE}" == "no" ] || echo "found; building cache."
 
-(
+if [ ! `readlink -f /bin/tar` = "/bin/tar.tar" ]; then
+	(
+	find /dev \( -type b -o -type c -o -type l \) -xdev | cut -c 2- | xargs tar czf "${DEVCACHE}.tmp" -C / $BUSYBOX_DEVCACHE_CREATE_OPTS && \
+		mv -f "${DEVCACHE}.tmp" "$DEVCACHE" && \
+		mv "$DEVCACHE_CURRENT_SYSCONF" "$DEVCACHE_SYSCONF"
+	) &
+else
+	(
 	tar czf "${DEVCACHE}.tmp" dev -C / $DEVCACHE_CREATE_OPTS && \
 		mv -f "${DEVCACHE}.tmp" "$DEVCACHE" && \
 		mv "$DEVCACHE_CURRENT_SYSCONF" "$DEVCACHE_SYSCONF"
-) &
+	) &
+fi
 
 exit 0

@@ -70,11 +70,15 @@ case "$1" in
 		    readfiles "$DEVCACHE_SYSCONF"
 		    OLDDATA="$READDATA"
 		    if [ "$OLDDATA" = "$NEWDATA" -a -f "$DEVCACHE" ]; then
-                            tar xzf $DEVCACHE -C / $DEVCACHE_EXTRACT_OPTS
-                            not_first_boot=1
-                            [ "$VERBOSE" != "no" ] && echo "udev: using cache file $DEVCACHE"
-                            [ -e "$DEVCACHE_CURRENT_SYSCONF" ] && rm -f "$DEVCACHE_CURRENT_SYSCONF"
-                    else
+			    if [ ! `readlink -f /bin/tar` = "/bin/tar.tar" ]; then
+				    tar xzf $DEVCACHE -C / $BUSYBOX_DEVCACHE_EXTRACT_OPTS
+			    else
+				    tar xzf $DEVCACHE -C / $DEVCACHE_EXTRACT_OPTS
+			    fi
+			    not_first_boot=1
+			    [ "$VERBOSE" != "no" ] && echo "udev: using cache file $DEVCACHE"
+			    [ -e "$DEVCACHE_CURRENT_SYSCONF" ] && rm -f "$DEVCACHE_CURRENT_SYSCONF"
+		    else
 			    # Output detailed reason why the cached /dev is not used
 			    if [ "$VERBOSE" != "no" ]; then
 				    echo "udev: udev cache not used"
