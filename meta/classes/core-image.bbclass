@@ -27,6 +27,7 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/LICENSE;md5=4d92cd373abda3937c2bc47fbc49d
 # - hwcodecs            - Install hardware acceleration codecs
 # - package-management  - installs package management tools and preserves the package manager database
 # - debug-tweaks        - makes an image suitable for development, e.g. allowing passwordless root logins
+# - empty-root-password - Allow passwordless root logins
 # - dev-pkgs            - development packages (headers, etc.) for all installed packages in the rootfs
 # - dbg-pkgs            - debug symbol packages for all installed packages in the rootfs
 # - doc-pkgs            - documentation packages for all installed packages in the rootfs
@@ -74,6 +75,8 @@ inherit image
 ROOTFS_POSTPROCESS_COMMAND += "rootfs_update_timestamp ; "
 
 # Zap the root password if empty-root-password feature is not enabled
+EMPTY_ROOT_PASSWORD_SUPPORT := '${@bb.utils.contains("IMAGE_FEATURES", "debug-tweaks", "empty-root-password", "",d)}'
+IMAGE_FEATURES  += '${EMPTY_ROOT_PASSWORD_SUPPORT}'
 ROOTFS_POSTPROCESS_COMMAND += '${@bb.utils.contains("IMAGE_FEATURES", "empty-root-password", "", "zap_empty_root_password ; ",d)}'
 
 # Tweak the mount options for rootfs in /etc/fstab if read-only-rootfs is enabled
