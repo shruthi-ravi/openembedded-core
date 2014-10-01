@@ -4,7 +4,7 @@ require bash.inc
 LICENSE = "GPLv3+"
 LIC_FILES_CHKSUM = "file://COPYING;md5=d32239bcb673463ab874e80d47fae504"
 
-PR = "r7"
+PR = "r8"
 
 SRC_URI = "${GNU_MIRROR}/bash/${BPN}-${PV}.tar.gz;name=tarball \
            ${GNU_MIRROR}/bash/bash-4.2-patches/bash42-001;apply=yes;striplevel=0;name=patch001 \
@@ -57,6 +57,7 @@ SRC_URI = "${GNU_MIRROR}/bash/${BPN}-${PV}.tar.gz;name=tarball \
            ${GNU_MIRROR}/bash/bash-4.2-patches/bash42-048;apply=yes;striplevel=0;name=patch048 \
            ${GNU_MIRROR}/bash/bash-4.2-patches/bash42-049;apply=yes;striplevel=0;name=patch049 \
            ${GNU_MIRROR}/bash/bash-4.2-patches/bash42-050;apply=yes;striplevel=0;name=patch050 \
+           ${GNU_MIRROR}/bash/bash-4.2-patches/bash42-051;apply=yes;striplevel=0;name=patch051 \
            file://execute_cmd.patch;striplevel=0 \
            file://mkbuiltins_have_stringize.patch \
            file://build-tests.patch \
@@ -166,5 +167,7 @@ SRC_URI[patch049.md5sum] = "07083eeb372bd8215050a8146acc1efd"
 SRC_URI[patch049.sha256sum] = "901cd74cdd9f3e9bb5cc907d563e3d4dcdf9d5f6a751e85b706a958f51bc510e"
 SRC_URI[patch050.md5sum] = "d7b28ed8e839463f4554d67afb4f15e9"
 SRC_URI[patch050.sha256sum] = "1a19b84455e83b46fcaa27759a5dd643dde2e11ceacd1e84e351970ea04d8ba6"
+SRC_URI[patch051.md5sum] = "7dfd10542744c75aa1fd9be7109573bb"
+SRC_URI[patch051.sha256sum] = "3e15347bc23a116b8ee898acec9d0ac744612ce9bbc0096fff47c4cf1149051c"
 
 BBCLASSEXTEND = "nativesdk"
