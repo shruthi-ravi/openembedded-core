@@ -13,6 +13,10 @@ PACKAGECONFIG[device-mapper] = "--enable-device-mapper,--disable-device-mapper,l
 EXTRA_OECONF = "--with-platform=pc --disable-grub-mkfont --program-prefix="" \
                --enable-liblzma=no --enable-device-mapper=no --enable-libzfs=no"
 
+PACKAGES =+ "grub-editenv"
+
+FILES_grub-editenv = "${bindir}/grub-editenv"
+
 do_install_append () {
     install -d ${D}${sysconfdir}/grub.d
 }
