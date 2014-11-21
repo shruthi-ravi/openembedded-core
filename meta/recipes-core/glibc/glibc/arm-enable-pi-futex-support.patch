@@ -1,0 +1,24 @@
+Signed-off-by: Ben Shelton <ben.shelton@ni.com>
+Upstream-Status: Accepted, see:
+https://sourceware.org/git/?p=glibc.git;a=commit;h=03d41216fe09fc71a2750946af8fe2892bf4feb5
+
+diff --git a/sysdeps/unix/sysv/linux/arm/kernel-features.h b/sysdeps/unix/sysv/linux/arm/kernel-features.h
+index e755741..84d9e9d 100644
+--- a/sysdeps/unix/sysv/linux/arm/kernel-features.h
++++ b/sysdeps/unix/sysv/linux/arm/kernel-features.h
+@@ -34,9 +34,11 @@
+ 
+ #include_next <kernel-features.h>
+ 
+-/* The ARM kernel may or may not support
++/* The ARM kernel before 3.14.3 may or may not support
+    futex_atomic_cmpxchg_inatomic, depending on kernel
+    configuration.  */
+-#undef __ASSUME_FUTEX_LOCK_PI
+-#undef __ASSUME_REQUEUE_PI
+-#undef __ASSUME_SET_ROBUST_LIST
++#if __LINUX_KERNEL_VERSION < 0x030E03
++# undef __ASSUME_FUTEX_LOCK_PI
++# undef __ASSUME_REQUEUE_PI
++# undef __ASSUME_SET_ROBUST_LIST
++#endif
