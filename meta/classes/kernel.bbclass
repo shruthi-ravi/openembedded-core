@@ -95,6 +95,7 @@ KERNEL_RELEASE ?= "${KERNEL_VERSION}"
 # Where built kernel lies in the kernel tree
 KERNEL_OUTPUT ?= "arch/${ARCH}/boot/${KERNEL_IMAGETYPE}"
 KERNEL_IMAGEDEST ?= "boot"
+KERNEL_IMAGE_SYMLINK_DEST ?= "/${KERNEL_IMAGEDEST}"
 
 #
 # configuration
@@ -395,7 +396,7 @@ pkg_postinst_kernel-base () {
 }
 
 pkg_postinst_kernel-image () {
-	update-alternatives --install /${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE} ${KERNEL_IMAGETYPE} /${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}-${KERNEL_VERSION} ${KERNEL_PRIORITY} || true
+	update-alternatives --install /${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE} ${KERNEL_IMAGETYPE} ${KERNEL_IMAGE_SYMLINK_DEST}/${KERNEL_IMAGETYPE}-${KERNEL_VERSION} ${KERNEL_PRIORITY} || true
 }
 
 pkg_postrm_kernel-image () {
