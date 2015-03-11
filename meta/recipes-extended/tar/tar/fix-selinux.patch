@@ -1,0 +1,35 @@
+xattrs: Fix bug with --selinux option and unlabeled files
+
+When SELinux is enabled in the kernel but no policy is loaded, files may be
+marked as unlabeled.  When these files are processed, rpl_lgetfilecon() returns
+the security context as "unlabeled".  map_to_failure() then frees the security
+context, sets errno to ENODATA, and returns -1.  However, since the security
+context is not NULL, xattr_selinux_coder() attempts to read from it when the
+header is generated, which leads to memory corruption (and a failure on some
+future malloc).
+
+For unlabeled files, set the security context to NULL to avoid this
+use-after-free bug.
+
+Signed-off-by: Ben Shelton <ben.shelton@ni.com>
+
+Upstream-Status: Pending
+
+---
+
+diff --git a/src/xattrs.c b/src/xattrs.c
+index dac15f3..07ddc11 100644
+--- a/src/xattrs.c
++++ b/src/xattrs.c
+@@ -530,6 +530,11 @@ xattrs_selinux_get (int parentfd, char const *file_name,
+                    fgetfilecon (fd, &st->cntx_name)
+                     : lgetfileconat (parentfd, file_name, &st->cntx_name);
+ 
++      /* If the file is unlabeled, map_to_failure() will have freed cntx_name.
++       * If this is the case, set it to NULL so it is not used after freeing. */
++      if (result == -1 && errno == ENODATA)
++        st->cntx_name = NULL;
++
+       if (result == -1 && errno != ENODATA && errno != ENOTSUP)
+         call_arg_warn (fd ? "fgetfilecon" : "lgetfileconat", file_name);
+ #endif
