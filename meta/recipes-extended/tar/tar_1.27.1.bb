@@ -4,6 +4,7 @@ LICENSE = "GPLv3"
 LIC_FILES_CHKSUM = "file://COPYING;md5=d32239bcb673463ab874e80d47fae504"
 
 SRC_URI += "file://remove-gets.patch \
+            file://fix-selinux.patch \
            "
 
 SRC_URI[md5sum] = "490e074dd7e71f553df8357a7ef9bdcf"
