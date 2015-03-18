@@ -16,10 +16,13 @@ def create_index(arg):
 
     try:
         bb.note("Executing '%s' ..." % index_cmd)
-        subprocess.check_output(index_cmd, stderr=subprocess.STDOUT, shell=True)
+        result = subprocess.check_output(index_cmd, stderr=subprocess.STDOUT, shell=True)
     except subprocess.CalledProcessError as e:
         return("Index creation command '%s' failed with return code %d:\n%s" %
                (e.cmd, e.returncode, e.output))
+
+    if result:
+        bb.note(result)
 
     return None
 
@@ -63,6 +66,9 @@ class RpmIndexer(Indexer):
                     localdata = bb.data.createCopy(self.d)
                     default_tune_key = "DEFAULTTUNE_virtclass-multilib-" + eext[1]
                     default_tune = localdata.getVar(default_tune_key, False)
+                    if default_tune is None:
+                        default_tune_key = "DEFAULTTUNE_ML_" + eext[1]
+                        default_tune = localdata.getVar(default_tune_key, False)
                     if default_tune:
                         localdata.setVar("DEFAULTTUNE", default_tune)
                         bb.data.update_data(localdata)
@@ -117,7 +123,10 @@ class RpmIndexer(Indexer):
             bb.note("There are no packages in %s" % self.deploy_dir)
             return
 
-        oe.utils.multiprocess_exec(index_cmds, create_index)
+        result = oe.utils.multiprocess_exec(index_cmds, create_index)
+        if result:
+            bb.fatal('%s' % ('\n'.join(result)))
+
 
 class OpkgIndexer(Indexer):
     def write_index(self):
@@ -153,7 +162,10 @@ class OpkgIndexer(Indexer):
             bb.note("There are no packages in %s!" % self.deploy_dir)
             return
 
-        oe.utils.multiprocess_exec(index_cmds, create_index)
+        result = oe.utils.multiprocess_exec(index_cmds, create_index)
+        if result:
+            bb.fatal('%s' % ('\n'.join(result)))
+
 
 
 class DpkgIndexer(Indexer):
@@ -197,7 +209,10 @@ class DpkgIndexer(Indexer):
             bb.note("There are no packages in %s" % self.deploy_dir)
             return
 
-        oe.utils.multiprocess_exec(index_cmds, create_index)
+        result = oe.utils.multiprocess_exec(index_cmds, create_index)
+        if result:
+            bb.fatal('%s' % ('\n'.join(result)))
+
 
 
 class PkgsList(object):
@@ -516,6 +531,9 @@ class PackageManager(object):
         cmd = [bb.utils.which(os.getenv('PATH'), "oe-pkgdata-util"),
                "glob", self.d.getVar('PKGDATA_DIR', True), installed_pkgs_file,
                globs]
+        exclude = self.d.getVar('PACKAGE_EXCLUDE_COMPLEMENTARY', True)
+        if exclude:
+            cmd.extend(['-x', exclude])
         try:
             bb.note("Installing complementary packages ...")
             complementary_pkgs = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
@@ -1258,9 +1276,9 @@ class OpkgPM(PackageManager):
 
                     with open(cfg_file_name, "w+") as cfg_file:
                         cfg_file.write("src/gz local-%s %s/%s" %
-                                       arch,
-                                       self.d.getVar('FEED_DEPLOYDIR_BASE_URI', True),
-                                       arch)
+                                       (arch,
+                                        self.d.getVar('FEED_DEPLOYDIR_BASE_URI', True),
+                                        arch))
 
     def _create_config(self):
         with open(self.config_file, "w+") as config_file:
@@ -1407,6 +1425,10 @@ class OpkgPM(PackageManager):
                     else:
                         status.write(line + "\n")
 
+                # Append a blank line after each package entry to ensure that it
+                # is separated from the following entry
+                status.write("\n")
+
     '''
     The following function dummy installs pkgs and returns the log of output.
     '''
@@ -1477,7 +1499,7 @@ class DpkgPM(PackageManager):
 
         self.apt_args = d.getVar("APT_ARGS", True)
 
-        self.all_arch_list = self.d.getVar('PACKAGE_ARCHS', True).split()
+        self.all_arch_list = archs.split()
         all_mlb_pkg_arch_list = (self.d.getVar('ALL_MULTILIB_PACKAGE_ARCHS', True) or "").replace('-', '_').split()
         self.all_arch_list.extend(arch for arch in all_mlb_pkg_arch_list if arch not in self.all_arch_list)
 

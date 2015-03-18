@@ -120,6 +120,7 @@ RDEPENDS_packagegroup-self-hosted-extended = "\
     gettext \
     gettext-runtime \
     git \
+    git-perltools \
     grep \
     groff \
     gzip \
@@ -153,37 +154,11 @@ RDEPENDS_packagegroup-self-hosted-extended = "\
     perl-pod \
     ${PTH} \
     python \
-    python-compile \
     python-compiler \
-    python-compression \
-    python-core \
-    python-curses \
-    python-datetime \
-    python-difflib \
-    python-distutils \
-    python-elementtree \
-    python-email \
-    python-fcntl \
     python-git \
-    python-json \
-    python-logging \
     python-misc \
-    python-mmap \
-    python-multiprocessing \
-    python-netclient \
-    python-netserver \
-    python-pickle \
-    python-pkgutil \
-    python-pprint \
-    python-re \
+    python-modules \
     python-rpm \
-    python-shell \
-    python-sqlite3 \
-    python-subprocess \
-    python-textutils \
-    python-unittest \
-    python-unixadmin \
-    python-xmlrpc \
     quota \
     readline \
     rpm \

@@ -25,6 +25,7 @@ SRC_URI = "git://sourceware.org/git/glibc.git;branch=release/${PV}/master \
            file://fix_am_rootsbindir.patch \
            file://arm-enable-pi-futex-support.patch \
            ${EGLIBCPATCHES} \
+           ${CVEPATCHES} \
           "
 EGLIBCPATCHES = "\
            file://timezone-re-written-tzselect-as-posix-sh.patch \
@@ -41,6 +42,11 @@ EGLIBCPATCHES = "\
 #	    file://initgroups_keys.patch \
 #
 
+CVEPATCHES = "\
+        file://CVE-2014-7817-wordexp-fails-to-honour-WRDE_NOCMD.patch \
+        file://CVE-2012-3406-Stack-overflow-in-vfprintf-BZ-16617.patch \
+        file://CVE-2014-9402_endless-loop-in-getaddr_r.patch \
+    "
 LIC_FILES_CHKSUM = "file://LICENSES;md5=e9a558e243b36d3209f380deb394b213 \
       file://COPYING;md5=b234ee4d69f5fce4486a80fdaf4a4263 \
       file://posix/rxspencer/COPYRIGHT;md5=dc5485bb394a13b2332ec1c785f5d83a \
@@ -86,9 +92,12 @@ EXTRA_OECONF = "--enable-kernel=${OLDEST_KERNEL} \
                 --without-selinux \
                 --enable-obsolete-rpc \
                 --with-kconfig=${STAGING_BINDIR_NATIVE} \
+                --disable-nscd \
                 ${GLIBC_EXTRA_OECONF}"
 
 EXTRA_OECONF += "${@get_libc_fpu_setting(bb, d)}"
+EXTRA_OECONF += "${@bb.utils.contains('DISTRO_FEATURES', 'libc-inet-anl', '--enable-nscd', '--disable-nscd', d)}"
+
 
 do_patch_append() {
     bb.build.exec_func('do_fix_readlib_c', d)

@@ -71,8 +71,13 @@ class BootimgPartitionPlugin(SourcePlugin):
         install_cmd = "install -d %s" % hdddir
         exec_cmd(install_cmd)
 
+        if not bootimg_dir:
+            bootimg_dir = get_bitbake_var("DEPLOY_DIR_IMAGE")
+            if not bootimg_dir:
+                msger.error("Couldn't find DEPLOY_DIR_IMAGE, exiting\n")
+
         msger.debug('Bootimg dir: %s' % bootimg_dir)
-        img_deploy_dir = get_bitbake_var("DEPLOY_DIR_IMAGE")
+
         boot_files = get_bitbake_var("IMAGE_BOOT_FILES")
 
         if not boot_files:
@@ -85,6 +90,8 @@ class BootimgPartitionPlugin(SourcePlugin):
         for src_entry in re.findall(r'[\w;\-\./]+', boot_files):
             if ';' in src_entry:
                 dst_entry = tuple(src_entry.split(';'))
+                if not dst_entry[0] or not dst_entry[1]:
+                    msger.error('Malformed boot file entry: %s' % (src_entry))
             else:
                 dst_entry = (src_entry, src_entry)
 
@@ -93,7 +100,7 @@ class BootimgPartitionPlugin(SourcePlugin):
 
         for deploy_entry in deploy_files:
             src, dst = deploy_entry
-            src_path = os.path.join(img_deploy_dir, src)
+            src_path = os.path.join(bootimg_dir, src)
             dst_path = os.path.join(hdddir, dst)
 
             msger.debug('Install %s as %s' % (os.path.basename(src_path),

@@ -17,6 +17,7 @@ SRC_URI = "${GNU_MIRROR}/coreutils/${BP}.tar.xz \
            file://dummy_help2man.patch \
            file://fix-for-dummy-man-usage.patch \
            file://fix-selinux-flask.patch \
+           file://date-tz-crash.patch \
           "
 
 SRC_URI[md5sum] = "8fb0ae2267aa6e728958adc38f8163a2"
@@ -72,6 +73,11 @@ do_install_append() {
 	# in update-alternatives to fail, therefore use lbracket - the name used
 	# for the actual source file.
 	mv ${D}${bindir}/[ ${D}${bindir}/lbracket.${BPN}
+}
+
+do_install_append_class-native(){
+	# remove groups to fix conflict with shadow-native
+	rm -f ${D}${STAGING_BINDIR_NATIVE}/groups
 }
 
 inherit update-alternatives

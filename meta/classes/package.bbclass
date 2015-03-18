@@ -208,16 +208,18 @@ def do_split_packages(d, root, file_regex, output_pattern, description, postinst
                 else:
                     the_files.append(aux_files_pattern_verbatim % m.group(1))
             d.setVar('FILES_' + pkg, " ".join(the_files))
-            if extra_depends != '':
-                d.appendVar('RDEPENDS_' + pkg, ' ' + extra_depends)
-            d.setVar('DESCRIPTION_' + pkg, description % on)
-            d.setVar('SUMMARY_' + pkg, summary % on)
-            if postinst:
-                d.setVar('pkg_postinst_' + pkg, postinst)
-            if postrm:
-                d.setVar('pkg_postrm_' + pkg, postrm)
         else:
             d.setVar('FILES_' + pkg, oldfiles + " " + newfile)
+        if extra_depends != '':
+            d.appendVar('RDEPENDS_' + pkg, ' ' + extra_depends)
+        if not d.getVar('DESCRIPTION_' + pkg, True):
+            d.setVar('DESCRIPTION_' + pkg, description % on)
+        if not d.getVar('SUMMARY_' + pkg, True):
+            d.setVar('SUMMARY_' + pkg, summary % on)
+        if postinst:
+            d.setVar('pkg_postinst_' + pkg, postinst)
+        if postrm:
+            d.setVar('pkg_postrm_' + pkg, postrm)
         if callable(hook):
             hook(f, pkg, file_regex, output_pattern, m.group(1))
 
@@ -392,28 +394,53 @@ def runtime_mapping_rename (varname, pkg, d):
 #
 
 python package_get_auto_pr() {
-    # per recipe PRSERV_HOST
+    import oe.prservice
+    import re
+
+    # Support per recipe PRSERV_HOST
     pn = d.getVar('PN', True)
     host = d.getVar("PRSERV_HOST_" + pn, True)
     if not (host is None):
         d.setVar("PRSERV_HOST", host)
 
-    if d.getVar('PRSERV_HOST', True):
-        try:
-            auto_pr=prserv_get_pr_auto(d)
-        except Exception as e:
-            bb.fatal("Can NOT get PRAUTO, exception %s" %  str(e))
-        if auto_pr is None:
-            if d.getVar('PRSERV_LOCKDOWN', True):
-                bb.fatal("Can NOT get PRAUTO from lockdown exported file")
-            else:
-                bb.fatal("Can NOT get PRAUTO from remote PR service")
-            return
-        d.setVar('PRAUTO',str(auto_pr))
-    else:
-        pkgv = d.getVar("PKGV", True)
+    pkgv = d.getVar("PKGV", True)
+
+    # PR Server not active, handle AUTOINC
+    if not d.getVar('PRSERV_HOST', True):
         if 'AUTOINC' in pkgv:
             d.setVar("PKGV", pkgv.replace("AUTOINC", "0"))
+        return
+
+    auto_pr = None
+    pv = d.getVar("PV", True)
+    version = d.getVar("PRAUTOINX", True)
+    pkgarch = d.getVar("PACKAGE_ARCH", True)
+    checksum = d.getVar("BB_TASKHASH", True)
+
+    if d.getVar('PRSERV_LOCKDOWN', True):
+        auto_pr = d.getVar('PRAUTO_' + version + '_' + pkgarch, True) or d.getVar('PRAUTO_' + version, True) or None
+        if auto_pr is None:
+            bb.fatal("Can NOT get PRAUTO from lockdown exported file")
+        d.setVar('PRAUTO',str(auto_pr))
+        return
+
+    try:
+        conn = d.getVar("__PRSERV_CONN", True)
+        if conn is None:
+            conn = oe.prservice.prserv_make_conn(d)
+        if conn is not None:
+            if "AUTOINC" in pkgv:
+                srcpv = bb.fetch2.get_srcrev(d)
+                base_ver = "AUTOINC-%s" % version[:version.find(srcpv)]
+                value = conn.getPR(base_ver, pkgarch, srcpv)
+                d.setVar("PKGV", pkgv.replace("AUTOINC", str(value)))
+
+            auto_pr = conn.getPR(version, pkgarch, checksum)
+    except Exception as e:
+        bb.fatal("Can NOT get PRAUTO, exception %s" %  str(e))
+    if auto_pr is None:
+        bb.fatal("Can NOT get PRAUTO from remote PR service")
+    d.setVar('PRAUTO',str(auto_pr))
 }
 
 LOCALEBASEPN ??= "${PN}"
@@ -1554,6 +1581,8 @@ python package_do_shlibs() {
             if len(dep_pkg) == 2:
                 lib_ver = dep_pkg[1]
             dep_pkg = dep_pkg[0]
+            if l not in shlib_provider:
+                shlib_provider[l] = {}
             shlib_provider[l][libdir] = (dep_pkg, lib_ver)
 
     libsearchpath = [d.getVar('libdir', True), d.getVar('base_libdir', True)]
@@ -1568,7 +1597,7 @@ python package_do_shlibs() {
             # /opt/abc/lib/libfoo.so.1 and contains /usr/bin/abc depending on system library libfoo.so.1
             # but skipping it is still better alternative than providing own
             # version and then adding runtime dependency for the same system library
-            if private_libs and n in private_libs:
+            if private_libs and n[0] in private_libs:
                 bb.debug(2, '%s: Dependency %s covered by PRIVATE_LIBS' % (pkg, n[0]))
                 continue
             if n[0] in shlib_provider.keys():

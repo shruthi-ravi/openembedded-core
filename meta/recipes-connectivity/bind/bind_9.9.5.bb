@@ -17,6 +17,7 @@ SRC_URI = "ftp://ftp.isc.org/isc/bind9/${PV}/${BPN}-${PV}.tar.gz \
            file://named.service \
            file://bind9 \
            file://init.d-add-support-for-read-only-rootfs.patch \
+           file://bind9_9_5-CVE-2014-8500.patch \
 	   "
 
 SRC_URI[md5sum] = "e676c65cad5234617ee22f48e328c24e"
@@ -46,10 +47,17 @@ PARALLEL_MAKE = ""
 
 RDEPENDS_${PN} = "python-core"
 
-PACKAGES_prepend = " ${PN}-utils "
+PACKAGE_BEFORE_PN += "${PN}-utils"
 FILES_${PN}-utils = "${bindir}/host ${bindir}/dig"
 FILES_${PN}-dev += "${bindir}/isc-config.h"
 FILES_${PN} += "${sbindir}/generate-rndc-key.sh"
+
+do_install_prepend() {
+	# clean host path in isc-config.sh before the hardlink created
+	# by "make install":
+	#   bind9-config -> isc-config.sh
+	sed -i -e "s,${STAGING_LIBDIR},${libdir}," ${S}/isc-config.sh
+}
 
 do_install_append() {
 	rm "${D}${bindir}/nslookup"

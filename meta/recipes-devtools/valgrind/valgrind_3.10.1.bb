@@ -20,6 +20,7 @@ SRC_URI = "http://www.valgrind.org/downloads/valgrind-${PV}.tar.bz2 \
            file://remove-ppc-tests-failing-build.patch \
            file://valgrind-remove-rpath.patch \
            file://add-ptest.patch \
+           file://pass-maltivec-only-if-it-supported.patch \
            file://run-ptest \
           "
 

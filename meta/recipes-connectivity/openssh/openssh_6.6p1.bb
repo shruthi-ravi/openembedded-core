@@ -50,7 +50,6 @@ inherit autotools-brokensep ptest
 
 # LFS support:
 CFLAGS += "-D__FILE_OFFSET_BITS=64"
-export LD = "${CC}"
 
 # login path is hardcoded in sshd
 EXTRA_OECONF = "'LOGIN_PROGRAM=${base_bindir}/login' \
@@ -75,14 +74,12 @@ CACHED_CONFIGUREVARS += "ac_cv_path_PATH_PASSWD_PROG=${bindir}/passwd"
 EXTRA_OECONF_append_libc-uclibc=" --without-pam"
 
 do_configure_prepend () {
+	export LD="${CC}"
+	install -m 0644 ${WORKDIR}/sshd_config ${B}/
+	install -m 0644 ${WORKDIR}/ssh_config ${B}/
 	if [ ! -e acinclude.m4 -a -e aclocal.m4 ]; then
 		cp aclocal.m4 acinclude.m4
 	fi
-}
-
-do_compile_append () {
-	install -m 0644 ${WORKDIR}/sshd_config ${S}/
-	install -m 0644 ${WORKDIR}/ssh_config ${S}/
 }
 
 do_install_append () {
@@ -97,6 +94,7 @@ do_install_append () {
 	rmdir ${D}${localstatedir}/run/sshd ${D}${localstatedir}/run ${D}${localstatedir}
 	install -d ${D}/${sysconfdir}/default/volatiles
 	install -m 644 ${WORKDIR}/volatiles.99_sshd ${D}/${sysconfdir}/default/volatiles/99_sshd
+	install -m 0755 ${S}/contrib/ssh-copy-id ${D}${bindir}
 
 	# Create config files for read-only rootfs
 	install -d ${D}${sysconfdir}/ssh
