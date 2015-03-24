@@ -25,6 +25,7 @@ SRC_URI += "\
   file://run-ptest \
   file://parallel-makeinst-create-bindir.patch \
   file://use_sysroot_ncurses_instead_of_host.patch \
+  file://use_stdlib_landmark.patch \
 "
 
 S = "${WORKDIR}/Python-${PV}"
