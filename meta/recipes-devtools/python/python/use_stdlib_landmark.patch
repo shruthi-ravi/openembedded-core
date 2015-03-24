@@ -1,0 +1,109 @@
+Backport of out of tree Python 3 patch
+
+http://bugs.python.org/issue12919
+
+Upstream-Status: Pending
+
+Signed-off-by: Thomas Wouters <twouters@google.com>
+
+Fixed LANDMARK define to have it work on python 2.7 (removed L"")
+
+Signed-off-by: Alejandro del Castillo <alejandro.delcastillo@ni.com>
+diff -Naur a/Include/pythonrun.h b/Include/pythonrun.h
+--- a/Include/pythonrun.h	2015-03-23 17:09:43.157875050 -0500
++++ b/Include/pythonrun.h	2015-03-23 17:13:57.637863802 -0500
+@@ -104,6 +104,7 @@
+ PyAPI_FUNC(char *) Py_GetPrefix(void);
+ PyAPI_FUNC(char *) Py_GetExecPrefix(void);
+ PyAPI_FUNC(char *) Py_GetPath(void);
++PyAPI_FUNC(void)   Py_ImportLandmark(void);
+ 
+ /* In their own files */
+ PyAPI_FUNC(const char *) Py_GetVersion(void);
+diff -Naur a/Lib/stdlib_landmark.py b/Lib/stdlib_landmark.py
+--- a/Lib/stdlib_landmark.py	1969-12-31 18:00:00.000000000 -0600
++++ b/Lib/stdlib_landmark.py	2015-03-26 15:00:28.830760974 -0500
+@@ -0,0 +1 @@
++# marker file
+diff -Naur a/Modules/getpath.c b/Modules/getpath.c
+--- a/Modules/getpath.c	2015-03-24 10:02:24.547189354 -0500
++++ b/Modules/getpath.c	2015-03-26 10:08:55.155534207 -0500
+@@ -51,7 +51,7 @@
+  * Modules/Setup.  If the landmark is found, we're done.
+  *
+  * For the remaining steps, the prefix landmark will always be
+- * lib/python$VERSION/os.py and the exec_prefix will always be
++ * lib/python$VERSION/stdlib_landmark.py and the exec_prefix will always be
+  * lib/python$VERSION/lib-dynload, where $VERSION is Python's version
+  * number as supplied by the Makefile.  Note that this means that no more
+  * build directory checking is performed; if the first step did not find
+@@ -122,7 +122,12 @@
+ #endif
+ 
+ #ifndef LANDMARK
+-#define LANDMARK "os.py"
++#define LANDMARK "stdlib_landmark.py"
++#define LANDMARK_MODULE "stdlib_landmark"
++#else
++#ifndef LANDMARK_MODULE
++#error LANDMARK defined but not LANDMARK_MODULE
++#endif
+ #endif
+ 
+ static char prefix[MAXPATHLEN+1];
+@@ -706,6 +711,31 @@
+     return progpath;
+ }
+ 
++void
++Py_ImportLandmark(void)
++{
++    PyObject *m = PyImport_ImportModule(LANDMARK_MODULE);
++    if (m == NULL) {
++        PyObject *f = PySys_GetObject("stderr");
++        if (Py_VerboseFlag) {
++            PyFile_WriteString(
++                "'import " LANDMARK_MODULE "' failed; traceback:\n", f);
++            PyErr_Print();
++        }
++        else {
++            /* Ignore a missing landmark module; if the stdlib wasn't
++             * properly located the next import (of 'site') will have
++             * instructions to run Python with '-v', which will show the
++             * above traceback.  If it *was* properly located, the landmark
++             * module probably isn't important anymore.
++             */
++            PyErr_Clear();
++        }
++    }
++    else {
++        Py_DECREF(m);
++    }
++}
+ 
+ #ifdef __cplusplus
+ }
+diff -Naur a/Python/pythonrun.c b/Python/pythonrun.c
+--- a/Python/pythonrun.c	2015-03-24 09:55:28.139207760 -0500
++++ b/Python/pythonrun.c	2015-03-24 17:36:46.573984353 -0500
+@@ -252,6 +252,10 @@
+ 
+     /* Initialize warnings. */
+     _PyWarnings_Init();
++
++    /* Make sure the stdlib is available by importing the landmark. */
++    Py_ImportLandmark();
++
+     if (PySys_HasWarnOptions()) {
+         PyObject *warnings_module = PyImport_ImportModule("warnings");
+         if (!warnings_module)
+@@ -617,7 +621,8 @@
+         PyDict_SetItemString(interp->sysdict, "modules",
+                              interp->modules);
+         _PyImportHooks_Init();
+-        initmain();
++        Py_ImportLandmark();
++	initmain();
+         if (!Py_NoSiteFlag)
+             initsite();
+     }
