@@ -25,6 +25,7 @@ SRC_URI += "\
   file://run-ptest \
   file://parallel-makeinst-create-bindir.patch \
   file://use_sysroot_ncurses_instead_of_host.patch \
+  file://use_stdlib_landmark.patch \
 "
 
 FILESEXTRAPATHS_prepend:="${THISDIR}/python:"
@@ -208,6 +209,8 @@ do_install_append() {
         # Move zlib back to ${libdir} (zipimport won't work without it)
         mkdir -p ${D}${libdir}/python2.7/encodings
         mv ${D}/zip${libdir}/python2.7/encodings/zlib* ${D}${libdir}/python2.7/encodings
+        # Move landmark file back to ${libdir}
+        mv ${D}/zip${libdir}/python2.7/stdlib_landmark.py ${D}${libdir}/python2.7/
         # Create /usr/lib/python27.zip
         cd ${D}/zip${libdir}/python2.7 ; zip -q -9 -r -y python27.zip . ; cd -
         mv ${D}/zip/${libdir}/python2.7/python27.zip ${D}${libdir}
