@@ -34,6 +34,8 @@ SRC_URI = "http://www.busybox.net/downloads/busybox-${PV}.tar.bz2;name=tarball \
            file://busybox-cross-menuconfig.patch \
            file://CVE-2014-9645_busybox_reject_module_names_with_slashes.patch \
            file://link-local-addr-fix.patch \
+           file://lzop-add-overflow-check.patch \
+           file://libarchive-open_zipped-does-not-need-to-check-extens.patch \
 "
 
 SRC_URI[tarball.md5sum] = "337d1a15ab1cb1d4ed423168b1eb7d7e"
