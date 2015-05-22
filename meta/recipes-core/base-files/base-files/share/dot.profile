@@ -7,4 +7,4 @@ fi
 # path set by /etc/profile
 # export PATH
 
-mesg n
+tty > /dev/null 2>&1 && mesg n
