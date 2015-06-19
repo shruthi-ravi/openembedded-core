@@ -104,6 +104,8 @@ nfsd_cv_func_statfs=${nfsd_cv_func_statfs=statfs2_bsize}
 nfsd_cv_bsd_signals=${nfsd_cv_bsd_signals=yes}
 
 #apr
+apr_cv_process_shared_works=${apr_cv_process_shared_works=no}
+apr_cv_pthreads_cflags=${apr_cv_pthreads_cflags=-pthread}
 apr_cv_tcp_nodelay_with_cork=${apr_cv_tcp_nodelay_with_cork=yes}
 
 # lftp
