@@ -59,7 +59,7 @@ do_configure_prepend() {
 
 do_compile() {
         # regenerate platform specific files, because they depend on system headers
-        cd Lib/plat-linux2
+        cd ${S}/Lib/plat-linux2
         include=${STAGING_INCDIR} ${STAGING_BINDIR_NATIVE}/python-native/python \
                 ${S}/Tools/scripts/h2py.py -i '(u_long)' \
                 ${STAGING_INCDIR}/dlfcn.h \
