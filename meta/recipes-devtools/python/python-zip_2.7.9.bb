@@ -165,7 +165,7 @@ do_install_append() {
         # No need for HTML processing support
         rm -f ${D}${libdir}/python2.7/formatter.* ${D}${libdir}/python2.7/htmlentitydefs.* ${D}${libdir}/python2.7/htmllib.* ${D}${libdir}/python2.7/markupbase.* ${D}${libdir}/python2.7/sgmllib.* ${D}${libdir}/python2.7/HTMLParser.*
         # No need for Python Integrated Development Environment
-        rm -rf ${D}${bindir}/idle ${libdir}/python2.7/idlelib
+        rm -rf ${D}${bindir}/idle ${D}${libdir}/python2.7/idlelib
         # No need for graphical image handling
         rm -f ${D}${libdir}/python2.7/colorsys.* ${D}${libdir}/python2.7/imghdr.* ${D}${libdir}/python2.7/lib-dynload/imageop.so ${D}${libdir}/python2.7/lib-dynload/rgbimg.so
         # No need for import library
