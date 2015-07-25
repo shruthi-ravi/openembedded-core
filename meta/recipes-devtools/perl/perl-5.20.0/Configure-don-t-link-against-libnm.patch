@@ -1,0 +1,53 @@
+From f92e7e58646ad1ca377ce9c3dec0c021c25ae0fb Mon Sep 17 00:00:00 2001
+From: Richard Tollerton <rich.tollerton@ni.com>
+Date: Fri, 24 Jul 2015 19:22:40 -0500
+Subject: [PATCH] Configure: don't link against libnm
+
+perl has been attempting to link against libnm (the "new math library")
+since 1.0, and exporting -lnm via config.sh. I can only find evidence of
+libnm existing in BSD, and even then, it was anachronistic by 4.3BSD
+(symlinked to libm) and disappeared entirely by 4.4BSD. I am unable to
+find this libnm in any OS release after 1986.
+
+NetworkManager has started installing libnm.so since version 1.0 (late
+2014). Hence, packages built against config.sh will try to link against
+-lnm, i.e., NetworkManager. Normally this is harmless, but this does
+cause a build failure when cross-compiling PostgreSQL under
+OpenEmbedded. All of the following need to occur for a build to fail:
+
+a) the package (for whatever reason) needs to configure itself against
+the native perl install, but *build* against a target sysroot. (No, I
+don't know why, I just try and build it.)
+
+b) NetworkManager is installed on the host (where libnm exists)
+
+c) NetworkManager is not installed on the target sysroot (where libnm
+doesn't exist)
+
+The validity of (a) is worthy of debate, but the true root cause is that
+perl continues to try to link against a math library that arguably
+hasn't existed for 30 years.
+
+Upstream-Status: Submitted
+
+Signed-off-by: Richard Tollerton <rich.tollerton@ni.com>
+---
+ Configure | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Configure b/Configure
+index 2f91ba1..6ad618c 100755
+--- a/Configure
++++ b/Configure
+@@ -1387,7 +1387,7 @@ libswanted_uselargefiles=''
+ : set usesocks on the Configure command line to enable socks.
+ : List of libraries we want.
+ : If anyone needs extra -lxxx, put those in a hint file.
+-libswanted="socket bind inet nsl nm ndbm gdbm dbm db malloc dl ld sun"
++libswanted="socket bind inet nsl ndbm gdbm dbm db malloc dl ld sun"
+ libswanted="$libswanted m crypt sec util c cposix posix ucb bsd BSD"
+ : We probably want to search /usr/shlib before most other libraries.
+ : This is only used by the lib/ExtUtils/MakeMaker.pm routine extliblist.
+-- 
+2.4.6
+

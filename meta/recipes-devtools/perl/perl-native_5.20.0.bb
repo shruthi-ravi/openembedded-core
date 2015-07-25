@@ -17,6 +17,7 @@ SRC_URI = "http://www.cpan.org/src/5.0/perl-${PV}.tar.gz \
            file://MM_Unix.pm.patch \
            file://debian/errno_ver.diff \
            file://dynaloaderhack.patch \
+           file://Configure-don-t-link-against-libnm.patch \
            file://perl-5.14.3-fix-CVE-2010-4777.patch "
 
 SRC_URI[md5sum] = "406ec049ebe3afcc80d9c76ec78ca4f8"
