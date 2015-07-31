@@ -274,7 +274,7 @@ class IsoImagePlugin(SourcePlugin):
             out = exec_cmd(du_cmd)
             part.set_size(int(out.split()[0]))
             part.extra_space = 0;
-            part.overhead_factor = 1
+            part.overhead_factor = 1.5
             part.prepare_rootfs(cr_workdir, oe_builddir, rootfs_dir, native_sysroot)
             rootfs_img = part.source_file
 
