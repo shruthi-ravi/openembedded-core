@@ -281,6 +281,7 @@ do_kernel_configme() {
 
 	cd ${S}
 	PATH=${PATH}:${S}/scripts/util
+	CFLAGS="${CFLAGS} ${TOOLCHAIN_OPTIONS}"
 	configme ${configmeflags} --reconfig --output ${B} ${LINUX_KERNEL_TYPE} ${KMACHINE}
 	if [ $? -ne 0 ]; then
 		bbfatal "Could not configure ${KMACHINE}-${LINUX_KERNEL_TYPE}"
