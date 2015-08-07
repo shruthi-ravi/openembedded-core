@@ -172,8 +172,6 @@ do_install_append() {
         rm -rf ${D}${libdir}/python2.7/importlib
         # No need for mailbox format support
         rm -f ${D}${libdir}/python2.7/mailbox.*
-        # No need for number API
-        rm -f ${D}${libdir}/python2.7/decimal.* ${D}${libdir}/python2.7/numbers.*
         # No need for package extension utility support
         rm -f ${D}${libdir}/python2.7/pkgutil.*
         # No need for profiling support
