@@ -219,11 +219,13 @@ class RpmManifest(Manifest):
                 if var in self.vars_to_split:
                     split_pkgs = self._split_multilib(self.d.getVar(var, True))
                     if split_pkgs is not None:
-                        pkgs = dict(pkgs.items() + split_pkgs.items())
+                        for pkg_type, pkg_list in split_pkgs.items():
+                            pkgs[pkg_type] = pkgs.get(pkg_type, '') + ' ' + pkg_list
                 else:
                     pkg_list = self.d.getVar(var, True)
                     if pkg_list is not None:
-                        pkgs[self.var_maps[self.manifest_type][var]] = self.d.getVar(var, True)
+                        pkg_type = self.var_maps[self.manifest_type][var]
+                        pkgs[pkg_type] = pkgs.get(pkg_type, '') + ' ' + pkg_list
 
             for pkg_type in pkgs:
                 for pkg in pkgs[pkg_type].split():
@@ -269,11 +271,13 @@ class OpkgManifest(Manifest):
                 if var in self.vars_to_split:
                     split_pkgs = self._split_multilib(self.d.getVar(var, True))
                     if split_pkgs is not None:
-                        pkgs = dict(pkgs.items() + split_pkgs.items())
+                        for pkg_type, pkg_list in split_pkgs.items():
+                            pkgs[pkg_type] = pkgs.get(pkg_type, '') + ' ' + pkg_list
                 else:
                     pkg_list = self.d.getVar(var, True)
                     if pkg_list is not None:
-                        pkgs[self.var_maps[self.manifest_type][var]] = self.d.getVar(var, True)
+                        pkg_type = self.var_maps[self.manifest_type][var]
+                        pkgs[pkg_type] = pkgs.get(pkg_type, '') + ' ' + pkg_list
 
             for pkg_type in pkgs:
                 for pkg in pkgs[pkg_type].split():
