@@ -22,6 +22,7 @@ class Manifest(object):
     var_maps = {
         MANIFEST_TYPE_IMAGE: {
             "PACKAGE_INSTALL": PKG_TYPE_MUST_INSTALL,
+            "PACKAGE_INSTALL_NODEPS": PKG_TYPE_MUST_INSTALL,
             "PACKAGE_INSTALL_ATTEMPTONLY": PKG_TYPE_ATTEMPT_ONLY,
             "LINGUAS_INSTALL": PKG_TYPE_LANGUAGE
         },

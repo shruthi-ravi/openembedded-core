@@ -62,6 +62,8 @@ IMAGE_INSTALL[type] = "list"
 export PACKAGE_INSTALL ?= "${IMAGE_INSTALL} ${ROOTFS_BOOTSTRAP_INSTALL} ${FEATURE_INSTALL}"
 PACKAGE_INSTALL_ATTEMPTONLY ?= "${FEATURE_INSTALL_OPTIONAL}"
 
+export PACKAGE_INSTALL_NODEPS ?= ""
+
 # Images are generally built explicitly, do not need to be part of world.
 EXCLUDE_FROM_WORLD = "1"
 
@@ -289,6 +291,7 @@ do_rootfs[prefuncs] += "rootfs_process_ignore"
 python rootfs_runtime_mapping() {
     pn = d.getVar('PN', True)
     runtime_mapping_rename("PACKAGE_INSTALL", pn, d)
+    runtime_mapping_rename("PACKAGE_INSTALL_NODEPS", pn, d)
     runtime_mapping_rename("PACKAGE_INSTALL_ATTEMPTONLY", pn, d)
     runtime_mapping_rename("BAD_RECOMMENDATIONS", pn, d)
 }
