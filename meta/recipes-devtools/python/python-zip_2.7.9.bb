@@ -34,7 +34,7 @@ S = "${WORKDIR}/Python-${PV}"
 
 SUMMARY_${PN}="Python interpreter and core modules (compressed)"
 
-PYTHON_PKG_LIST="libpython2 python python-audio python-codecs python-compile python-compiler python-compression python-core python-crypt python-ctypes python-curses python-datetime python-elementtree python-email python-fcntl python-idle python-io python-json python-lang python-logging python-math python-mime python-mmap python-multiprocessing python-netclient python-netserver python-pickle python-pprint python-re python-resource python-subprocess python-shell python-stringold python-terminal python-textutils python-threading python-unixadmin python-xml python-xmlrpc python-zlib python-distutils"
+PYTHON_PKG_LIST="libpython2 python python-audio python-codecs python-compile python-compiler python-compression python-core python-crypt python-ctypes python-curses python-datetime python-elementtree python-email python-fcntl python-idle python-io python-json python-lang python-logging python-math python-mime python-mmap python-multiprocessing python-netclient python-netserver python-pickle python-pprint python-re python-resource python-subprocess python-shell python-stringold python-terminal python-textutils python-threading python-unixadmin python-xml python-xmlrpc python-zlib python-distutils python-misc"
 
 RPROVIDES_${PN}+="${PYTHON_PKG_LIST}"
 
