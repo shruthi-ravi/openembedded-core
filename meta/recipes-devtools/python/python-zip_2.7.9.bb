@@ -34,7 +34,7 @@ S = "${WORKDIR}/Python-${PV}"
 
 SUMMARY_${PN}="Python interpreter and core modules (compressed)"
 
-PYTHON_PKG_LIST="libpython2 python python-audio python-codecs python-compile python-compiler python-compression python-core python-crypt python-ctypes python-curses python-datetime python-elementtree python-email python-fcntl python-idle python-io python-json python-lang python-logging python-math python-mime python-mmap python-multiprocessing python-netclient python-netserver python-numbers python-pickle python-pprint python-re python-resource python-subprocess python-shell python-stringold python-terminal python-textutils python-threading python-unixadmin python-xml python-xmlrpc python-zlib python-distutils python-misc"
+PYTHON_PKG_LIST="libpython2 python python-audio python-codecs python-compile python-compiler python-compression python-core python-crypt python-ctypes python-curses python-datetime python-elementtree python-email python-fcntl python-idle python-io python-json python-lang python-logging python-math python-mime python-mmap python-multiprocessing python-netclient python-netserver python-numbers python-pickle python-pprint python-profile python-re python-resource python-subprocess python-shell python-stringold python-terminal python-textutils python-threading python-unixadmin python-xml python-xmlrpc python-zlib python-distutils python-misc"
 
 RPROVIDES_${PN}+="${PYTHON_PKG_LIST}"
 
@@ -174,8 +174,6 @@ do_install_append() {
         rm -f ${D}${libdir}/python2.7/mailbox.*
         # No need for package extension utility support
         rm -f ${D}${libdir}/python2.7/pkgutil.*
-        # No need for profiling support
-        rm -f ${D}${libdir}/python2.7/profile.* ${D}${libdir}/python2.7/pstats.* ${D}${libdir}/python2.7/cProfile.* ${D}${libdir}/python2.7/lib-dynload/_lsprof.so
         # No need for interactive help support
         rm -rf ${D}${bindir}/pydoc ${D}${libdir}/python2.7/pydoc.* ${D}${libdir}/python2.7/pydoc_data
         # No need for readline support
