@@ -34,7 +34,7 @@ S = "${WORKDIR}/Python-${PV}"
 
 SUMMARY_${PN}="Python interpreter and core modules (compressed)"
 
-PYTHON_PKG_LIST="libpython2 python python-audio python-codecs python-compile python-compiler python-compression python-core python-crypt python-ctypes python-curses python-datetime python-elementtree python-email python-fcntl python-idle python-io python-json python-lang python-logging python-math python-mime python-mmap python-multiprocessing python-netclient python-netserver python-numbers python-pickle python-pprint python-profile python-re python-resource python-subprocess python-shell python-stringold python-terminal python-textutils python-threading python-unixadmin python-xml python-xmlrpc python-zlib python-distutils python-misc"
+PYTHON_PKG_LIST="libpython2 python python-audio python-codecs python-compile python-compiler python-compression python-core python-crypt python-ctypes python-curses python-datetime python-difflib python-elementtree python-email python-fcntl python-idle python-io python-json python-lang python-logging python-math python-mime python-mmap python-multiprocessing python-netclient python-netserver python-numbers python-pickle python-pprint python-profile python-re python-resource python-subprocess python-shell python-stringold python-terminal python-textutils python-threading python-unixadmin python-xml python-xmlrpc python-zlib python-distutils python-misc"
 
 RPROVIDES_${PN}+="${PYTHON_PKG_LIST}"
 
@@ -156,8 +156,6 @@ do_install_append() {
         rm -rf ${D}${libdir}/python2.7/bsddb ${D}${libdir}/python2.7/lib-dynload/_bsddb.so
         # No need for file-based database support
         rm -f ${D}${libdir}/python2.7/anydbm.* ${D}${libdir}/python2.7/dumbdbm.* ${D}${libdir}/python2.7/whichdb.*
-        # No need for difflib
-        rm -f ${D}${libdir}/python2.7/difflib.*
         # No need for GNU database support
         rm -f ${D}${libdir}/python2.7/lib-dynload/gdbm.so
         # No need for hotshot performance profiler
