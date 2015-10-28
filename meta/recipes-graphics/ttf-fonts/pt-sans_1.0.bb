@@ -17,7 +17,7 @@ inherit fontcache
 
 FONT_PACKAGES = "${PN}"
 
-SRC_URI = "http://www.fontstock.com/public/PTSansOFL.zip"
+SRC_URI = "http://download.ni.com/ni-linux-rt/src/PTSansOFL.zip"
 
 SRC_URI[md5sum] = "93b4e9d4099c7dbf043db92c5c43e40f"
 SRC_URI[sha256sum] = "7105b5e7d9965b5b2fa189b5a84c66a8252b3432c0293f1350c15ad159447ee1"
