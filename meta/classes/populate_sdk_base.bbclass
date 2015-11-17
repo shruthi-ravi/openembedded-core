@@ -92,6 +92,8 @@ fakeroot python do_populate_sdk() {
     # Process DEFAULTTUNE
     bb.build.exec_func("create_sdk_files", d)
 
+    bb.build.exec_func("check_sdk_sysroots", d)
+
     bb.build.exec_func("tar_sdk", d)
 
     sdk_packaging_func = d.getVar("SDK_PACKAGING_FUNC", True) or ""
@@ -109,6 +111,57 @@ fakeroot create_sdk_files() {
 }
 
 SDKTAROPTS = "--owner=root --group=root -j"
+
+python check_sdk_sysroots() {
+    # Fails build if there are broken or dangling symlinks in SDK sysroots
+
+    if d.getVar('CHECK_SDK_SYSROOTS', True) != '1':
+        # disabled, bail out
+        return
+
+    def norm_path(path):
+        return os.path.abspath(path)
+
+    # Get scan root
+    SCAN_ROOT = norm_path("${SDK_OUTPUT}/${SDKPATH}/sysroots/")
+
+    bb.note('Checking SDK sysroots at ' + SCAN_ROOT)
+
+    def check_symlink(linkPath):
+        if not os.path.islink(linkPath):
+            return
+
+        linkDirPath = os.path.dirname(linkPath)
+
+        targetPath = os.readlink(linkPath)
+        if not os.path.isabs(targetPath):
+            targetPath = os.path.join(linkDirPath, targetPath)
+        targetPath = norm_path(targetPath)
+
+        if SCAN_ROOT != os.path.commonprefix( [SCAN_ROOT, targetPath] ):
+            bb.error("Escaping symlink {0!s} --> {1!s}".format(linkPath, targetPath))
+            return
+
+        if not os.path.exists(targetPath):
+            bb.error("Broken symlink {0!s} --> {1!s}".format(linkPath, targetPath))
+            return
+
+        if os.path.isdir(targetPath):
+            dir_walk(targetPath)
+
+    def walk_error_handler(e):
+        bb.error(str(e))
+
+    def dir_walk(rootDir):
+        for dirPath,subDirEntries,fileEntries in os.walk(rootDir, followlinks=False, onerror=walk_error_handler):
+            entries = subDirEntries + fileEntries
+            for e in entries:
+                ePath = os.path.join(dirPath, e)
+                check_symlink(ePath)
+
+    # start
+    dir_walk(SCAN_ROOT)
+}
 
 fakeroot tar_sdk() {
 	# Package it up
