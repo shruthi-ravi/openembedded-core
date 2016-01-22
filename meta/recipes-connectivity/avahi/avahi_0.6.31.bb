@@ -17,6 +17,10 @@ PR = "${INC_PR}.1"
 SRC_URI[md5sum] = "2f22745b8f7368ad5a0a3fddac343f2d"
 SRC_URI[sha256sum] = "8372719b24e2dd75de6f59bb1315e600db4fd092805bd1201ed0cb651a2dab48"
 
+SRC_URI_append = " \
+    file://0001-Don-t-log-warnings-about-invalid-packets-Fixes-lathi.patch \
+    "
+
 DEPENDS += "intltool-native"
 
 PACKAGES =+ "libavahi-gobject"
