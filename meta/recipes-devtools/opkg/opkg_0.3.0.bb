@@ -63,7 +63,6 @@ RDEPENDS_${PN}_class-nativesdk = ""
 RREPLACES_${PN} = "opkg-nogpg opkg-collateral"
 RCONFLICTS_${PN} = "opkg-collateral"
 RPROVIDES_${PN} = "opkg-collateral"
-PROVIDES += "opkg-collateral"
 
 PACKAGES =+ "libopkg-dev libopkg-staticdev libopkg"
 
