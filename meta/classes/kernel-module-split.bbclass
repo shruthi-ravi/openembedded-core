@@ -181,9 +181,7 @@ python split_kernel_module_packages () {
 
     module_deps = parse_depmod()
     module_regex = '^(.*)\.k?o$'
-    module_pattern = d.getVar('KERNEL_MODULE_PACKAGE_PREPEND', True)
-    if not module_pattern:
-        module_pattern = 'kernel-module-%s'
+    module_pattern = 'kernel-module-%s'
 
     postinst = d.getVar('pkg_postinst_modules', True)
     postrm = d.getVar('pkg_postrm_modules', True)
