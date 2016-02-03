@@ -119,7 +119,7 @@ def packages_filter_out_system(d):
     PN-dbg PN-doc PN-locale-eb-gb removed.
     """
     pn = d.getVar('PN', True)
-    blacklist = map(lambda suffix: pn + suffix, ('', '-dbg', '-dev', '-doc', '-locale', '-staticdev'))
+    blacklist = map(lambda suffix: pn + suffix, ('', '-src', '-dbg', '-dev', '-doc', '-locale', '-staticdev'))
     localepkg = pn + "-locale-"
     pkgs = []
 
