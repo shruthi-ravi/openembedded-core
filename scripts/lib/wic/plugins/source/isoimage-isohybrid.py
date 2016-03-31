@@ -362,7 +362,7 @@ class IsoImagePlugin(SourcePlugin):
                     grub_cmd += "terminal minicmd test iorw loadenv echo help "
                     grub_cmd += "reboot serial terminfo iso9660 loopback tar "
                     grub_cmd += "memdisk ls search_fs_uuid udf btrfs xfs lvm "
-                    grub_cmd += "reiserfs ata "
+                    grub_cmd += "reiserfs ata smbios"
                     exec_native_cmd(grub_cmd, native_sysroot)
 
             else:
