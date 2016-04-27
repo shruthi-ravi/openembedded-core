@@ -26,11 +26,6 @@ python write_package_manifest() {
 }
 
 license_create_manifest() {
-        # Test if BUILD_IMAGES_FROM_FEEDS is defined in env
-        if [ -n "${BUILD_IMAGES_FROM_FEEDS}" ]; then
-          exit 0
-        fi
-
 	INSTALLED_PKGS=`cat ${LICENSE_DIRECTORY}/${IMAGE_NAME}/package.manifest`
 	LICENSE_MANIFEST="${LICENSE_DIRECTORY}/${IMAGE_NAME}/license.manifest"
 	# remove existing license.manifest file
@@ -39,11 +34,16 @@ license_create_manifest() {
 	fi
 	touch ${LICENSE_MANIFEST}
 	for pkg in ${INSTALLED_PKGS}; do
-		filename=`ls ${PKGDATA_DIR}/runtime-reverse/${pkg}| head -1`
+		filename=`ls ${PKGDATA_DIR}/runtime-reverse/${pkg} 2>/dev/null| head -1 || true`
 		pkged_pn="$(sed -n 's/^PN: //p' ${filename})"
 
 		# check to see if the package name exists in the manifest. if so, bail.
 		if grep -q "^PACKAGE NAME: ${pkg}" ${LICENSE_MANIFEST}; then
+			continue
+		fi
+
+		# skip packages that do not have pkgdata
+		if [ -z "${filename}" ]; then
 			continue
 		fi
 
@@ -96,6 +96,12 @@ license_create_manifest() {
 		cp ${LICENSE_MANIFEST} ${IMAGE_ROOTFS}/usr/share/common-licenses/license.manifest
 		if [ "${COPY_LIC_DIRS}" = "1" ]; then
 			for pkg in ${INSTALLED_PKGS}; do
+				filename=`ls ${PKGDATA_DIR}/runtime-reverse/${pkg} 2>/dev/null| head -1 || true`
+				# skip packages that do not have pkgdata
+				if [ -z "${filename}" ]; then
+					continue
+				fi
+
 				mkdir -p ${IMAGE_ROOTFS}/usr/share/common-licenses/${pkg}
 				pkged_pn="$(oe-pkgdata-util -p ${PKGDATA_DIR} lookup-recipe ${pkg})"
 				for lic in `ls ${LICENSE_DIRECTORY}/${pkged_pn}`; do
