@@ -34,7 +34,7 @@ S = "${WORKDIR}/Python-${PV}"
 
 SUMMARY_${PN}="Python interpreter and core modules (compressed)"
 
-PYTHON_PKG_LIST="libpython2 python python-audio python-codecs python-compile python-compiler python-compression python-core python-crypt python-ctypes python-curses python-datetime python-difflib python-elementtree python-email python-fcntl python-idle python-io python-json python-lang python-logging python-math python-mime python-mmap python-multiprocessing python-netclient python-netserver python-numbers python-pickle python-pprint python-profile python-re python-resource python-subprocess python-shell python-stringold python-terminal python-textutils python-threading python-unixadmin python-xml python-xmlrpc python-zlib python-distutils python-misc"
+PYTHON_PKG_LIST="libpython2 python python-audio python-codecs python-compile python-compiler python-compression python-core python-crypt python-ctypes python-curses python-datetime python-difflib python-elementtree python-email python-fcntl python-idle python-image python-io python-json python-lang python-logging python-math python-mime python-mmap python-multiprocessing python-netclient python-netserver python-numbers python-pickle python-pprint python-profile python-re python-resource python-subprocess python-shell python-stringold python-terminal python-textutils python-threading python-unixadmin python-xml python-xmlrpc python-zlib python-distutils python-misc"
 
 RPROVIDES_${PN}+="${PYTHON_PKG_LIST}"
 
@@ -164,8 +164,6 @@ do_install_append() {
         rm -f ${D}${libdir}/python2.7/formatter.* ${D}${libdir}/python2.7/htmlentitydefs.* ${D}${libdir}/python2.7/htmllib.* ${D}${libdir}/python2.7/markupbase.* ${D}${libdir}/python2.7/sgmllib.* ${D}${libdir}/python2.7/HTMLParser.*
         # No need for Python Integrated Development Environment
         rm -rf ${D}${bindir}/idle ${D}${libdir}/python2.7/idlelib
-        # No need for graphical image handling
-        rm -f ${D}${libdir}/python2.7/colorsys.* ${D}${libdir}/python2.7/imghdr.* ${D}${libdir}/python2.7/lib-dynload/imageop.so ${D}${libdir}/python2.7/lib-dynload/rgbimg.so
         # No need for import library
         rm -rf ${D}${libdir}/python2.7/importlib
         # No need for mailbox format support
