@@ -19,8 +19,8 @@ SRC_URI += " file://configure_ac.patch \
              file://CVE-2016-7141.patch \
            "
 
-SRC_URI[md5sum] = "9ea3123449439bbd960cd25cf98796fb"
-SRC_URI[sha256sum] = "ddc643ab9382e24bbe4747d43df189a0a6ce38fcb33df041b9cb0b3cd47ae98f"
+SRC_URI[md5sum] = "09a7c5769a7eae676d5e2c86d51f167e"
+SRC_URI[sha256sum] = "7f8240048907e5030f67be0a6129bc4b333783b9cca1391026d700835a788dde"
 
 inherit autotools pkgconfig binconfig multilib_header
 
