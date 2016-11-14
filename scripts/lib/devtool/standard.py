@@ -63,7 +63,7 @@ def add(args, config, basepath, workspace):
             args.srctree = args.recipename
             args.recipename = None
         elif os.path.isdir(args.recipename):
-            logger.warn('Ambiguous argument %s - assuming you mean it to be the recipe name')
+            logger.warn('Ambiguous argument "%s" - assuming you mean it to be the recipe name' % args.recipename)
 
     if args.fetch:
         if args.fetchuri:
@@ -809,22 +809,19 @@ def modify(args, config, basepath, workspace):
 
     return 0
 
-def _get_patchset_revs(args, srctree, recipe_path):
+def _get_patchset_revs(srctree, recipe_path, initial_rev=None):
     """Get initial and update rev of a recipe. These are the start point of the
     whole patchset and start point for the patches to be re-generated/updated.
     """
     import bb
 
-    if args.initial_rev:
-        return args.initial_rev, args.initial_rev
-
-    # Parse initial rev from recipe
+    # Parse initial rev from recipe if not specified
     commits = []
-    initial_rev = None
     with open(recipe_path, 'r') as f:
         for line in f:
             if line.startswith('# initial_rev:'):
-                initial_rev = line.split(':')[-1].strip()
+                if not initial_rev:
+                    initial_rev = line.split(':')[-1].strip()
             elif line.startswith('# commit:'):
                 commits.append(line.split(':')[-1].strip())
 
@@ -1123,7 +1120,7 @@ def _update_recipe_patch(args, config, workspace, srctree, rd, config_data):
         raise DevtoolError('unable to find workspace bbappend for recipe %s' %
                            args.recipename)
 
-    initial_rev, update_rev, changed_revs = _get_patchset_revs(args, srctree, append)
+    initial_rev, update_rev, changed_revs = _get_patchset_revs(srctree, append, args.initial_rev)
     if not initial_rev:
         raise DevtoolError('Unable to find initial revision - please specify '
                            'it with --initial-rev')
@@ -1166,6 +1163,7 @@ def _update_recipe_patch(args, config, workspace, srctree, rd, config_data):
                         removevalues = {'SRC_URI': removedentries + remaining}
                 _, destpath = oe.recipeutils.bbappend_recipe(
                                 rd, args.append, files,
+                                wildcardver=args.wildcard_version,
                                 removevalues=removevalues)
             else:
                 logger.info('No patches or local source files needed updating')
@@ -1323,7 +1321,7 @@ def reset(args, config, basepath, workspace):
         for recipe in recipes:
             targets.append(recipe)
             recipefile = workspace[recipe]['recipefile']
-            if recipefile:
+            if recipefile and os.path.exists(recipefile):
                 targets.extend(get_bbclassextend_targets(recipefile, recipe))
         try:
             exec_build_env_command(config.init_path, basepath, 'bitbake -c clean %s' % ' '.join(targets))

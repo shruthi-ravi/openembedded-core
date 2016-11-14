@@ -18,7 +18,7 @@ BINUPV = "${@binutils_branch_version(d)}"
 
 UPSTREAM_CHECK_GITTAGREGEX = "binutils-(?P<pver>\d+_(\d_?)*)"
 
-SRCREV = "71fa566a9cf2597b60a58c1d7c148bab637454a6"
+SRCREV = "544ddf9322b1b83982e5cb84a54d084ee7e718ea"
 SRC_URI = "\
      git://sourceware.org/git/binutils-gdb.git;branch=binutils-${BINUPV}-branch;protocol=git \
      file://0002-configure-widen-the-regexp-for-SH-architectures.patch \
@@ -34,7 +34,9 @@ SRC_URI = "\
      file://0012-Add-support-for-Netlogic-XLP.patch \
      file://0013-Fix-GOT-address-computations-in-initial-PLT-entries-.patch \
      file://0014-Correct-nios2-_gp-address-computation.patch \
+     file://0015-allow-zero-length-elements.patch \
      file://aarch64-tls.patch \
+     file://0015-Refine-.cfi_sections-check-to-only-consider-compact-.patch \
 "
 S  = "${WORKDIR}/git"
 

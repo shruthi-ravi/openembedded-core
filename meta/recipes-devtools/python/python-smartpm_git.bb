@@ -13,7 +13,6 @@ SRCNAME = "smart"
 
 SRC_URI = "\
           git://github.com/smartpm/smart.git \
-          file://smartpm-rpm5-nodig.patch \
           file://smart-recommends.patch \
           file://smart-improve-error-reporting.patch \
           file://smart-channelsdir.patch \
@@ -24,6 +23,10 @@ SRC_URI = "\
           file://smart-set-noprogress-for-pycurl.patch \
           file://smart-cache.py-getPackages-matches-name-version.patch \
           file://smart-channel-remove-all.patch \
+          file://smart-locale.patch \
+          file://smartpm-rpm5-support-check-signatures.patch \
+          file://smart-add-deugging-when-targetpath-is-empty.patch \
+          file://channels-rpm_sys-use-md5sum-instead-of-mtime-as-the-.patch \
          "
 
 SRCREV = "407a7eca766431257dcd1da15175cc36a1bb22d0"
