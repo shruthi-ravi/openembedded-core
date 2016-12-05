@@ -117,6 +117,8 @@ SRC_URI += " \
 	   file://rpmqv.c-check-_gpg_passphrase-before-ask-for-input.patch \
 	   file://0001-Disable-__sync_add_and_fetch_8-on-nios2.patch \
 	   file://gcc6-stdlib.patch \
+	   file://0001-system.h-query.c-support-nosignature.patch \
+	   file://rpm-ensure-rpm2cpio-call-rpm-relocation-code.patch \
 "
 
 # OE specific changes
@@ -152,6 +154,7 @@ SRC_URI += " \
 	   file://rpm-rpmdb-grammar.patch \
 	   file://rpm-disable-blaketest.patch \
 	   file://rpm-autogen-force.patch \
+	   file://rpmdb-prevent-race-in-tmpdir-creation.patch \
 	   file://rpmdb-more-verbose-error-logging-in-rpmTempFile.patch \
 "
 
@@ -525,7 +528,7 @@ do_configure() {
 	sed -e 's/pkg-config --exists uuid/pkg-config --exists ossp-uuid/g' \
 	    -e 's/pkg-config uuid/pkg-config ossp-uuid/g' -i ${S}/configure
 
-	( cd ${S}/syck ; set +e ; rm -- -l* ; make distclean ) || :
+	( cd ${S}/syck ; set +e ; rm -- -l* ; rm Makefile config.h config.status lib/Makefile libtool stamp-h1 tests/.deps tests/Makefile  ) || :
 
 	export varprefix=${localstatedir}
 	oe_runconf

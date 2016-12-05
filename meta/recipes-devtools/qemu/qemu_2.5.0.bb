@@ -16,6 +16,16 @@ SRC_URI += "file://configure-fix-Darwin-target-detection.patch \
             file://rng_remove_the_unused_request_cancellation_code.patch \
             file://rng_move_request_queue_cleanup_from_RngEgd_to_RngBackend.patch \
             file://CVE-2016-2858.patch \
+            file://CVE-2016-3710.patch \
+            file://CVE-2016-3712_p1.patch \
+            file://CVE-2016-3712_p2.patch \
+            file://CVE-2016-3712_p3.patch \
+            file://CVE-2016-3712_p4.patch \
+            file://CVE-2016-4439.patch \
+            file://CVE-2016-6351_p1.patch \
+            file://CVE-2016-6351_p2.patch \
+            file://CVE-2016-4002.patch \
+            file://CVE-2016-5403.patch \
            "
 SRC_URI_prepend = "http://wiki.qemu-project.org/download/${BP}.tar.bz2"
 SRC_URI[md5sum] = "f469f2330bbe76e3e39db10e9ac4f8db"

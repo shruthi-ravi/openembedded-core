@@ -63,6 +63,12 @@ SRC_URI += " \
         file://ext-ODBM_File-t-odbm.t-fix-the-path-of-dbmt_common.p.patch \
         file://perl-PathTools-don-t-filter-out-blib-from-INC.patch \
         file://perl-errno-generation-gcc5.patch \
+        file://perl-fix-conflict-between-skip_all-and-END.patch \
+        file://perl-test-customized.patch \
+        file://perl-fix-CVE-2016-2381.patch \
+        file://perl-fix-CVE-2016-6185.patch \
+        file://perl-fix-CVE-2015-8607.patch \
+        file://perl-fix-CVE-2016-1238.patch \
 "
 
 # Fix test case issues
