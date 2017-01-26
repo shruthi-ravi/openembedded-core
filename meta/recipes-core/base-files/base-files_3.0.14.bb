@@ -122,16 +122,16 @@ do_install () {
 	install -m 0644 ${WORKDIR}/profile ${D}${sysconfdir}/profile
 	sed -i 's#ROOTHOME#${ROOT_HOME}#' ${D}${sysconfdir}/profile
 	install -m 0644 ${WORKDIR}/shells ${D}${sysconfdir}/shells
-	install -m 0755 ${WORKDIR}/share/dot.profile ${D}${sysconfdir}/skel/.profile
-	install -m 0755 ${WORKDIR}/share/dot.bashrc ${D}${sysconfdir}/skel/.bashrc
+	install -m 0644 ${WORKDIR}/share/dot.profile ${D}${sysconfdir}/skel/.profile
+	install -m 0644 ${WORKDIR}/share/dot.bashrc ${D}${sysconfdir}/skel/.bashrc
 	install -m 0644 ${WORKDIR}/nsswitch.conf ${D}${sysconfdir}/nsswitch.conf
 	install -m 0644 ${WORKDIR}/host.conf ${D}${sysconfdir}/host.conf
 	install -m 0644 ${WORKDIR}/motd ${D}${sysconfdir}/motd
 
 	ln -sf /proc/mounts ${D}${sysconfdir}/mtab
 
-	install -m 0755 ${WORKDIR}/share/dot.profile ${D}${ROOT_HOME}/.profile
-	install -m 0755 ${WORKDIR}/share/dot.bashrc ${D}${ROOT_HOME}/.bashrc
+	install -m 0644 ${WORKDIR}/share/dot.profile ${D}${ROOT_HOME}/.profile
+	install -m 0644 ${WORKDIR}/share/dot.bashrc ${D}${ROOT_HOME}/.bashrc
 }
 
 DISTRO_VERSION[vardepsexclude] += "DATE"
