@@ -129,6 +129,9 @@ do_install () {
 	install -m 0644 ${WORKDIR}/motd ${D}${sysconfdir}/motd
 
 	ln -sf /proc/mounts ${D}${sysconfdir}/mtab
+
+	install -m 0755 ${WORKDIR}/share/dot.profile ${D}${ROOT_HOME}/.profile
+	install -m 0755 ${WORKDIR}/share/dot.bashrc ${D}${ROOT_HOME}/.bashrc
 }
 
 DISTRO_VERSION[vardepsexclude] += "DATE"
