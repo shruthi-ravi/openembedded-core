@@ -23,6 +23,7 @@ SRC_URI = "${SAVANNAH_GNU_MIRROR}/sysvinit/sysvinit-${PV}.tar.bz2 \
            file://bootlogd-xemacps.patch \
            file://shutdown.c-Avoid-symbol-collision-with-shutdown.patch \
            file://shutdown.c-Avoid-symbol-collision-with-warn.patch \
+           file://bootlogd.c-don-t-keep-writing-to-broken-consoles.patch \
 "
 
 SRC_URI[md5sum] = "6eda8a97b86e0a6f59dabbf25202aa6f"
