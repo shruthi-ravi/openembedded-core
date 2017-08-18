@@ -11,6 +11,7 @@ RDEPENDS_${PN} = "${PN}-inittab"
 
 SRC_URI = "${SAVANNAH_GNU_MIRROR}/sysvinit/sysvinit-${PV}.tar.xz \
            file://bootlogd-xemacps.patch \
+           file://bootlogd.c-don-t-keep-writing-to-broken-consoles.patch \
            file://install.patch \
            file://crypt-lib.patch \
            file://pidof-add-m-option.patch \
