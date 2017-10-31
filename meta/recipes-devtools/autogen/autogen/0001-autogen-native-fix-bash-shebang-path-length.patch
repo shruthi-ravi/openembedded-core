@@ -1,0 +1,38 @@
+From 75ac0493c176cde6611e3eb8b18d6b19caf0f179 Mon Sep 17 00:00:00 2001
+From: Ioan-Adrian Ratiu <adrian.ratiu@ni.com>
+Date: Tue, 31 Oct 2017 16:55:53 +0200
+Subject: [PATCH] autogen-native: fix bash shebang path length
+
+This patch should NOT be upstreamed to OE-core and it is to be dropped
+in post-Rocko releases (upstream OE removed autogen-native entirely).
+
+NIBuild / OE builds for older NILRT fail because their shebang paths
+are too long (this isn't a problem in newer NILRT because we don't use
+NIBuild so it's paths are much shorter).
+
+Fix by replacing the hardcoded script shebang path with a /usr/bin/env
+runtime detected one.
+
+Upstream-Status: Inappropriate [NI-specific, will be dropped post-Rocko]
+
+Signed-off-by: Ioan-Adrian Ratiu <adrian.ratiu@ni.com>
+---
+ autoopts/mk-tpl-config.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/autoopts/mk-tpl-config.sh b/autoopts/mk-tpl-config.sh
+index ca9884cf..592ef317 100755
+--- a/autoopts/mk-tpl-config.sh
++++ b/autoopts/mk-tpl-config.sh
+@@ -124,7 +124,7 @@ find_shell_prog() {
+     case `uname -s` in
+     SunOS )
+       while : ; do
+-        POSIX_SHELL=`which bash`
++        POSIX_SHELL='/usr/bin/env bash'
+         test -x "${POSIX_SHELL}" && break
+         POSIX_SHELL=/usr/xpg4/bin/sh
+         test -x "${POSIX_SHELL}" && break
+-- 
+2.14.2
+

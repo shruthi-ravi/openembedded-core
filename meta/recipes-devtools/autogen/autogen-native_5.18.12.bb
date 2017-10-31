@@ -14,6 +14,7 @@ SRC_URI = "${GNU_MIRROR}/autogen/rel${PV}/autogen-${PV}.tar.gz \
            file://fix-script-err-when-processing-libguile.patch \
            file://0001-config-libopts.m4-regenerate-it-from-config-libopts..patch \
            file://0002-autoopts-mk-tpl-config.sh-fix-perl-path.patch \
+	   file://0001-autogen-native-fix-bash-shebang-path-length.patch \
 "
 
 SRC_URI[md5sum] = "551d15ccbf5b5fc5658da375d5003389"
