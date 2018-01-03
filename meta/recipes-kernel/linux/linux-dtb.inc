@@ -4,7 +4,7 @@ FILES_kernel-devicetree = "/${KERNEL_IMAGEDEST}/devicetree*"
 PACKAGE_WRITE_DEPS += "virtual/update-alternatives-native"
 
 python __anonymous () {
-    d.appendVar("PACKAGES", " ${KERNEL_PACKAGE_NAME}-devicetree")
+    d.appendVar("PACKAGES", " kernel-devicetree")
 }
 
 normalize_dtb () {
