@@ -29,8 +29,7 @@ else
     kernelabi=\$(cat ${PKGDATA_DIR}/kernel-depmod/kernel-abiversion)
     if [ "\$kernelabi" != "\$4" ]; then
         echo "Error: Kernel version \$4 does not match kernel-abiversion (\$kernelabi)" >&2
-		# Do not exit here. NILRT doesn't care if the kernel versions are mismatched at the image-build phase.
-        #exit 1
+        exit 1
     fi
 fi
 
