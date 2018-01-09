@@ -1,10 +1,10 @@
 # Support for device tree generation
-FILES_kernel-devicetree = "/${KERNEL_IMAGEDEST}/devicetree*"
+FILES_${KERNEL_PACKAGE_NAME}-devicetree = "/${KERNEL_IMAGEDEST}/devicetree*"
 
 PACKAGE_WRITE_DEPS += "virtual/update-alternatives-native"
 
 python __anonymous () {
-    d.appendVar("PACKAGES", " kernel-devicetree")
+    d.appendVar("PACKAGES", " %s-devicetree " % d.expand("${KERNEL_PACKAGE_NAME}"))
 }
 
 normalize_dtb () {
