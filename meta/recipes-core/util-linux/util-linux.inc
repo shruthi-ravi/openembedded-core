@@ -300,6 +300,7 @@ python populate_packages_prepend() {
                       extra_depends='', prepend=True, allow_links=True)
 }
 
+RDEPENDS_${PN}-hwclock += "hwclock-init"
 RDEPENDS_${PN}-bash-completion += "util-linux-lsblk"
 RDEPENDS_${PN}-ptest = "bash grep coreutils which util-linux-blkid util-linux-fsck btrfs-tools"
 
