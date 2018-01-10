@@ -292,6 +292,7 @@ python populate_packages_prepend() {
 }
 
 RDEPENDS_${PN}-bash-completion += "util-linux-lsblk"
+RDEPENDS_${PN}-hwclock += "hwclock-init"
 RDEPENDS_${PN}-ptest = "bash grep coreutils"
 
 do_compile_ptest() {
