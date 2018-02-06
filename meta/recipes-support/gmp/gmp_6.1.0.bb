@@ -30,8 +30,4 @@ do_install_append_class-target() {
 
 SSTATE_SCAN_FILES += "gmp.h"
 
-# Doesn't compile in MIPS16e mode due to use of hand-written
-# assembly
-MIPS_INSTRUCTION_SET = "mips"
-
 BBCLASSEXTEND = "native nativesdk"
