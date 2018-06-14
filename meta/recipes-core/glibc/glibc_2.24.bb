@@ -38,6 +38,8 @@ SRC_URI = "${GLIBC_GIT_URI};branch=${SRCBRANCH};name=glibc \
            file://0025-Define-DUMMY_LOCALE_T-if-not-defined.patch \
            file://0026-build_local_scope.patch \
            file://0027-arm-mark-__startcontext-as-.cantunwind-bug-20435.patch \
+	   file://0001-Avoid-.symver-on-common-symbols-BZ-21666.patch \
+	   file://0001-Fix-warnings-from-latest-GCC.patch \
 "
 
 SRC_URI += "\
@@ -61,6 +63,8 @@ PACKAGES_DYNAMIC = ""
 # the -isystem in bitbake.conf screws up glibc do_stage
 BUILD_CPPFLAGS = "-I${STAGING_INCDIR_NATIVE}"
 TARGET_CPPFLAGS = "-I${STAGING_DIR_TARGET}${includedir}"
+
+SELECTED_OPTIMIZATION += "-Wno-error"
 
 GLIBC_BROKEN_LOCALES = ""
 #
