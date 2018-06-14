@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://LICENSES;md5=e9a558e243b36d3209f380deb394b213 \
 
 DEPENDS += "gperf-native bison-native"
 
-SRCREV ?= "df3ff4e49d4ee3cbbdaeb0b1cb5dc2344c08be98"
+SRCREV ?= "23158b08a0908f381459f273a984c6fd328363cb"
 
 SRCBRANCH ?= "release/${PV}/master"
 
