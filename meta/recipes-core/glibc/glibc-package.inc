@@ -206,11 +206,8 @@ do_poststash_install_cleanup () {
 	rm -rf ${D}/${localedir}
 	rm -rf ${D}${datadir}/locale
 	if [ "${libdir}" != "${exec_prefix}/lib" ]; then
-		if [ -d ${D}${exec_prefix}/lib/locale ] ; then
-			rm -rf ${D}${exec_prefix}/lib/locale
-			# error out if directory isn't empty
-			rm -f ${D}${exec_prefix}/lib
-		fi
+		# This dir only exists to hold locales
+		rm -rf ${D}${exec_prefix}/lib
 	fi
 }
 addtask do_poststash_install_cleanup after do_stash_locale do_install before do_populate_sysroot do_package
