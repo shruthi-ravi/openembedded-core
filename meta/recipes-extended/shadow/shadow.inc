@@ -6,7 +6,8 @@ LICENSE = "BSD | Artistic-1.0"
 LIC_FILES_CHKSUM = "file://COPYING;md5=ed80ff1c2b40843cf5768e5229cf16e5 \
                     file://src/passwd.c;beginline=8;endline=30;md5=d83888ea14ae61951982d77125947661"
 
-DEPENDS = "virtual/crypt"
+DEPENDS_class-native = ""
+DEPENDS_class-nativesdk = ""
 
 UPSTREAM_CHECK_URI = "https://github.com/shadow-maint/shadow/releases"
 
