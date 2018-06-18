@@ -6,7 +6,8 @@ require diffutils.inc
 SRC_URI = "${GNU_MIRROR}/diffutils/diffutils-${PV}.tar.xz \
            file://0001-Unset-need_charset_alias-when-building-for-musl.patch \
            file://run-ptest \
-"
+           file://0001-getopt1-Fix-build-on-glibc-2.24.patch \
+           "
 SRC_URI_append_libc-glibc = " file://0001-explicitly-disable-replacing-getopt.patch"
 
 SRC_URI[md5sum] = "07cf286672ced26fba54cd0313bdc071"
@@ -16,6 +17,8 @@ EXTRA_OECONF += "ac_cv_path_PR_PROGRAM=${bindir}/pr --without-libsigsegv-prefix"
 
 # Fix "Argument list too long" error when len(TMPDIR) = 410
 acpaths = "-I ./m4"
+
+SELECTED_OPTIMIZATION += "-Wno-error"
 
 inherit ptest
 
