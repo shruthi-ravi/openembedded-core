@@ -22,7 +22,7 @@ RDEPENDS_localedef += "glibc"
 # killer which used to effectively break i18n on machines with < 128MB RAM.
 
 # default to disabled 
-ENABLE_BINARY_LOCALE_GENERATION ?= "0"
+ENABLE_BINARY_LOCALE_GENERATION = "0"
 ENABLE_BINARY_LOCALE_GENERATION_pn-nativesdk-glibc-locale = "1"
 
 #enable locale generation on these arches
