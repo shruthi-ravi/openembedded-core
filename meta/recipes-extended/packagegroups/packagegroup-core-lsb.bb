@@ -118,7 +118,7 @@ RDEPENDS_packagegroup-core-lsb-misc = "\
     gettext \
     gettext-runtime \
     groff \
-    lsbinitscripts \
+    initd-functions \
     lsbtest \
     lsof \
     strace \
