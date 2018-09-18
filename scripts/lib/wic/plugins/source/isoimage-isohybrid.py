@@ -172,7 +172,6 @@ class IsoImagePlugin(SourcePlugin):
 
         if not initrd or not os.path.exists(initrd):
             # Create initrd from rootfs directory
-            initrd = "%s/initrd.cpio.gz" % cr_workdir
             initrd_dir = "%s/INITRD" % cr_workdir
             shutil.copytree("%s" % rootfs_dir, \
                             "%s" % initrd_dir, symlinks=True)
@@ -191,10 +190,9 @@ class IsoImagePlugin(SourcePlugin):
             else:
                 raise WicError("Couldn't find or build initrd, exiting.")
 
-            exec_cmd("cd %s && find . | cpio -o -H newc -R root:root >./initrd.cpio " \
-                    % initrd_dir, as_shell=True)
-            exec_cmd("gzip -f -9 -c %s/initrd.cpio > %s" \
-                    % (initrd_dir, initrd), as_shell=True)
+            exec_cmd("cd %s && find . | cpio -o -H newc -R root:root >%s/initrd.cpio " \
+                     % (initrd_dir, cr_workdir), as_shell=True)
+            exec_cmd("gzip -f -9 %s/initrd.cpio" % cr_workdir, as_shell=True)
             shutil.rmtree(initrd_dir)
 
         return initrd
