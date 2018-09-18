@@ -172,6 +172,7 @@ class IsoImagePlugin(SourcePlugin):
 
         if not initrd or not os.path.exists(initrd):
             # Create initrd from rootfs directory
+            initrd = "%s/initrd.cpio.gz" % cr_workdir
             initrd_dir = "%s/INITRD" % cr_workdir
             shutil.copytree("%s" % rootfs_dir, \
                             "%s" % initrd_dir, symlinks=True)
