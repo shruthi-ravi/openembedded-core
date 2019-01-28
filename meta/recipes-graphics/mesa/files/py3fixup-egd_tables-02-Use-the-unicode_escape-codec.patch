@@ -1,0 +1,36 @@
+From 91939255a7c556a5d85a57fb6a191e0c8cfd29ce Mon Sep 17 00:00:00 2001
+From: Mathieu Bridon <bochecha@daitauha.fr>
+Date: Thu, 7 Jun 2018 12:26:20 +0200
+Subject: [PATCH 2/2] python: Use the unicode_escape codec
+
+Python 2 had string_escape and unicode_escape codecs. Python 3 only has
+the latter. These work the same as far as we're concerned, so let's use
+the future-proof one.
+
+However, the reste of the code expects unicode strings, so we need to
+decode them again.
+
+Signed-off-by: Mathieu Bridon <bochecha@daitauha.fr>
+Reviewed-by: Dylan Baker <dylan@pnwbakers.com>
+
+Upstream-Status: Backport
+---
+ src/gallium/drivers/r600/egd_tables.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/gallium/drivers/r600/egd_tables.py b/src/gallium/drivers/r600/egd_tables.py
+index 7489649ec72..8a60a6229ad 100644
+--- a/src/gallium/drivers/r600/egd_tables.py
++++ b/src/gallium/drivers/r600/egd_tables.py
+@@ -61,7 +61,7 @@ class StringTable:
+         """
+         fragments = [
+             '"%s\\0" /* %s */' % (
+-                te[0].encode('string_escape'),
++                te[0].encode('unicode_escape').decode(),
+                 ', '.join(str(idx) for idx in te[2])
+             )
+             for te in self.table
+-- 
+2.20.0
+

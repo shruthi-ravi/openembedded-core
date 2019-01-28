@@ -9,6 +9,8 @@ SRC_URI = "https://mesa.freedesktop.org/archive/mesa-${PV}.tar.xz \
            file://0001-winsys-svga-drm-Include-sys-types.h.patch \
            file://0001-Makefile.vulkan.am-explictly-add-lib-expat-to-intel-.patch \
            file://0001-st-dri-Initialise-modifier-to-INVALID-for-DRI2.patch \
+           file://py3fixup-egd_tables-01-Use-the-print-function.patch \
+           file://py3fixup-egd_tables-02-Use-the-unicode_escape-codec.patch \
            "
 
 SRC_URI[md5sum] = "203d1a79156ab6926f2d253b377e9d9d"
