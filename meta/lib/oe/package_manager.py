@@ -174,7 +174,7 @@ class OpkgIndexer(Indexer):
                 if not os.path.exists(pkgs_file):
                     open(pkgs_file, "w").close()
 
-                index_cmds.add('%s -r %s -p %s -m %s %s' %
+                index_cmds.add('%s --checksum md5 --checksum sha256 -r %s -p %s -m %s %s' %
                                   (opkg_index_cmd, pkgs_file, pkgs_file, filelist_cmd, pkgs_dir))
 
                 index_sign_files.add(pkgs_file)
