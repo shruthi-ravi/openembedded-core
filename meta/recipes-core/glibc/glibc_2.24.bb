@@ -38,6 +38,7 @@ SRC_URI = "${GLIBC_GIT_URI};branch=${SRCBRANCH};name=glibc \
            file://0025-Define-DUMMY_LOCALE_T-if-not-defined.patch \
            file://0026-build_local_scope.patch \
            file://0027-arm-mark-__startcontext-as-.cantunwind-bug-20435.patch \
+           file://0028-Fix-rpcgen-buffer-overrun-bug-20790.patch \
 	   file://0001-Avoid-.symver-on-common-symbols-BZ-21666.patch \
 	   file://0001-Fix-warnings-from-latest-GCC.patch \
 "
