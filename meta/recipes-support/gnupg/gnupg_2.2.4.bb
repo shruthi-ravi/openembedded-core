@@ -47,4 +47,4 @@ PACKAGECONFIG ??= "gnutls"
 PACKAGECONFIG[gnutls] = "--enable-gnutls, --disable-gnutls, gnutls"
 PACKAGECONFIG[sqlite3] = "--enable-sqlite, --disable-sqlite, sqlite3"
 
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"

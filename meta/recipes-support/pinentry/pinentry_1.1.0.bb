@@ -35,4 +35,4 @@ PACKAGECONFIG[gtk2] = "--enable-pinentry-gtk2, --disable-pinentry-gtk2, gtk+ gli
 #To use libsecret, add meta-gnome
 PACKAGECONFIG[secret] = "--enable-libsecret, --disable-libsecret, libsecret"
 
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"
