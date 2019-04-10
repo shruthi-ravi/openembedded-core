@@ -19,12 +19,15 @@ SRC_URI = "http://downloads.yoctoproject.org/releases/${BPN}/${BPN}-${PV}.tar.gz
            file://0003-opkg_gpg-Load-pubkeys-with-gpgme_op_keylist.patch \
            file://0004-opkg_gpg-Move-pubkeys-from-etc-opkg-.gpg-etc-opkg-gp.patch \
            file://0005-libopkg-pkg.c-Check-downloaded-file-size-in-pkg_veri.patch \
+           file://0001-regress-issue72.py-resolve-paths-before-comparision.patch \
+           file://0001-opkg-add-target-for-testsuite-installation.patch \
+           file://run-ptest \
 "
 
 SRC_URI[md5sum] = "ae51d95fee599bb4dce08453529158f5"
 SRC_URI[sha256sum] = "f6c00515d8a2ad8f6742a8e73830315d1983ed0459cba77c4d656cfc9e7fe6fe"
 
-inherit autotools pkgconfig systemd
+inherit autotools pkgconfig systemd ptest
 
 SYSTEMD_SERVICE_${PN} = "opkg-configure.service"
 
@@ -68,6 +71,7 @@ do_install_append () {
 RDEPENDS_${PN} = "${VIRTUAL-RUNTIME_update-alternatives} opkg-arch-config libarchive"
 RDEPENDS_${PN}_class-native = ""
 RDEPENDS_${PN}_class-nativesdk = ""
+RDEPENDS_${PN}-ptest += "make binutils python3-core python3-compression"
 RREPLACES_${PN} = "opkg-nogpg opkg-collateral"
 RCONFLICTS_${PN} = "opkg-collateral"
 RPROVIDES_${PN} = "opkg-collateral"
