@@ -15,10 +15,6 @@ SRC_URI = "http://downloads.yoctoproject.org/releases/${BPN}/${BPN}-${PV}.tar.gz
            file://opkg-configure.service \
            file://opkg.conf \
            file://0001-opkg_conf-create-opkg.lock-in-run-instead-of-var-run.patch \
-           file://0002-file_util.c-file_mkdir_hier-Avoid-overly-permissive.patch \
-           file://0003-opkg_gpg-Load-pubkeys-with-gpgme_op_keylist.patch \
-           file://0004-opkg_gpg-Move-pubkeys-from-etc-opkg-.gpg-etc-opkg-gp.patch \
-           file://0005-libopkg-pkg.c-Check-downloaded-file-size-in-pkg_veri.patch \
            file://0001-regress-issue72.py-resolve-paths-before-comparision.patch \
            file://0001-opkg-add-target-for-testsuite-installation.patch \
            file://run-ptest \
