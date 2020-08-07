@@ -26,7 +26,7 @@ do_install () {
 
 PACKAGES = "${PN}"
 
-PACKAGE_ARCH = "all"
+inherit allarch
 
 FILES_${PN} = "${sysconfdir}/init.d/hwclock.sh"
 
