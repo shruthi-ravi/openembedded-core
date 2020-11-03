@@ -88,8 +88,15 @@ def opkg_query(cmd_output):
 
     return output
 
-def failed_postinsts_abort(pkgs, log_path):
-    bb.fatal("""Postinstall scriptlets of %s have failed. If the intention is to defer them to first boot,
+def failed_postinsts_handler(d, pkgs, log_path):
+    # Abort on post-installation failures only if BUILD_IMAGES_FROM_FEEDS
+    # is not enabled. Post-installation failures are expected in cases
+    # where utilities required to run post-install scripts do not get
+    # installed to the native rootfs because package_write_ipk
+    # dependencies are nulled when building images from feed. These
+    # scripts will be run on first boot.
+    if not d.getVar('BUILD_IMAGES_FROM_FEEDS'):
+        bb.fatal("""Postinstall scriptlets of %s have failed. If the intention is to defer them to first boot,
 then please place them into pkg_postinst_ontarget_${PN} ().
 Deferring to first boot via 'exit 1' is no longer supported.
 Details of the failure are in %s.""" %(pkgs, log_path))
@@ -476,7 +483,11 @@ class PackageManager(object, metaclass=ABCMeta):
                                 % (script, self.d.getVar('T'), self.d.getVar('BB_CURRENTTASK')))
                         self._postpone_to_first_boot(script_full)
                     else:
-                        bb.fatal("The postinstall intercept hook '%s' failed, details in %s/log.do_%s" % (script, self.d.getVar('T'), self.d.getVar('BB_CURRENTTASK')))
+                        if not self.d.getVar('BUILD_IMAGES_FROM_FEEDS'):
+                            bb.fatal("The postinstall intercept hook '%s' failed, details in %s/log.do_%s" % (script, self.d.getVar('T'), self.d.getVar('BB_CURRENTTASK')))
+                        else:
+                            bb.note("The postinstall intercept hook '%s' failed, details in %s/log.do_%s" % (script, self.d.getVar('T'), self.d.getVar('BB_CURRENTTASK')))
+
 
     @abstractmethod
     def update(self):
@@ -898,7 +909,7 @@ class RpmPM(PackageManager):
                 failed_scriptlets_pkgnames[line.split()[-1]] = True
 
         if len(failed_scriptlets_pkgnames) > 0:
-            failed_postinsts_abort(list(failed_scriptlets_pkgnames.keys()), self.d.expand("${T}/log.do_${BB_CURRENTTASK}"))
+            failed_postinsts_handler(self.d, list(failed_scriptlets_pkgnames.keys()), self.d.expand("${T}/log.do_${BB_CURRENTTASK}"))
 
     def remove(self, pkgs, with_dependencies = True):
         if not pkgs:
@@ -1181,6 +1192,7 @@ class OpkgPM(OpkgDpkgPM):
             self.deploy_dir = self.d.getVar("DEPLOY_DIR_IPK")
         else:
             self.deploy_dir = oe.path.join(self.d.getVar('WORKDIR'), ipk_repo_workdir)
+
         self.deploy_lock_file = os.path.join(self.deploy_dir, "deploy.lock")
         self.opkg_cmd = bb.utils.which(os.getenv('PATH'), "opkg")
         self.opkg_args = "--volatile-cache -f %s -t %s -o %s " % (self.config_file, self.d.expand('${T}/ipktemp/') ,target_rootfs)
@@ -1390,7 +1402,7 @@ class OpkgPM(OpkgDpkgPM):
                     bb.warn(line)
                     failed_pkgs.append(line.split(".")[0])
             if failed_pkgs:
-                failed_postinsts_abort(failed_pkgs, self.d.expand("${T}/log.do_${BB_CURRENTTASK}"))
+                failed_postinsts_handler(self.d, failed_pkgs, self.d.expand("${T}/log.do_${BB_CURRENTTASK}"))
         except subprocess.CalledProcessError as e:
             (bb.fatal, bb.warn)[attempt_only]("Unable to install packages. "
                                               "Command '%s' returned %d:\n%s" %
@@ -1621,7 +1633,7 @@ class DpkgPM(OpkgDpkgPM):
                         bb.warn("%s for package %s failed with %d:\n%s" %
                                 (control_script.name, pkg_name, e.returncode,
                                     e.output.decode("utf-8")))
-                        failed_postinsts_abort([pkg_name], self.d.expand("${T}/log.do_${BB_CURRENTTASK}"))
+                        failed_postinsts_handler(self.d, [pkg_name], self.d.expand("${T}/log.do_${BB_CURRENTTASK}"))
 
     def update(self):
         os.environ['APT_CONFIG'] = self.apt_conf_file
